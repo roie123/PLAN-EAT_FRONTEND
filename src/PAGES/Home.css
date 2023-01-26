@@ -1,0 +1,124 @@
+.familiy-list-cont{
+    width: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+    cursor: pointer;
+}
+.car-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.next-meals-title{
+    text-align: center;
+    margin-top: 10vh;
+    letter-spacing: 1vh;
+    animation-name: point;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-duration: 0.5s;
+    animation-delay: 0.25s;
+    opacity: 0;
+}
+.next-meals-cont{
+    width: 100%;
+    height: 70vh;
+    padding: 4vh;
+    opacity: 0;
+    animation-name: meals;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+
+}
+@keyframes meals {
+    0%{opacity: 0; transform: translateX(-505px);}
+    /* 50%{opacity: 0.5; transform: translateX(-40px);}
+   75%{opacity: 0.75; transform: translateX(0);} */
+    100%{opacity: 1;}
+}
+.nice-points-cont{
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+align-items: center;
+
+}
+.nice-point{
+    font-size: 10vh;
+    margin: 5vh;
+    height: 3vh;
+    animation-name: point;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-duration: 0.5s;
+    animation-delay: 0.25s;
+    opacity: 0;
+}
+@keyframes point {
+    0%{opacity: 0; transform: translateX(-300px);}
+    100%{opacity:1; transform: translateX(0);}
+}
+.next-meals-cont{
+display: flex;
+flex-direction: column ;
+}
+.day-cont{
+
+}
+.day-of-week-title{
+    text-align: center;
+    margin-top: 6vh;
+    font-size: larger;
+    font-weight: bolder;
+     
+}
+.meal-cont{
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 3%;
+}
+
+.meal-time-head{
+text-align: center;
+margin-top: 4vh;
+margin-bottom: 4vh;
+letter-spacing: 1vh;
+}
+.recipes-cont{
+    /* background-color: aquamarine; */
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    overflow-x: scroll;
+}
+
+.recipe-card{
+display: flex;
+flex-direction: column;
+height: 30%;
+width: 33%;
+align-items: center;
+}
+.img-cont{
+width: 10vh;
+height: 10vh;
+border-radius: 50%;
+overflow: hidden;
+
+}
+
+img{
+    width: 100%;
+    height: 100%; 
+    object-fit: fill;
+}
+.recipe-name{
+    margin-top: 2vh;
+    text-align: center;
+    margin-bottom: 2vh;
+}

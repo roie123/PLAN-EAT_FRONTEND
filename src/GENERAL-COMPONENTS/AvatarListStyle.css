@@ -1,0 +1,19 @@
+.avatar-cont{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-x: scroll;
+   
+    
+}
+.user-cont{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: small;
+    color: rgb(168, 170, 171);
+}

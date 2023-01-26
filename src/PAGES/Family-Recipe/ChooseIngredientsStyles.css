@@ -1,0 +1,103 @@
+.search-wrapper{
+  
+}
+
+.search-container{
+  position: relative;
+  padding: 20px 50px;
+}
+
+.search-input{
+  width: 80vw;
+  border: 1vh solid #fff;
+  background: transparent;
+  padding: 1vh 2vh;
+  border-radius: 50px;
+  outline: none;
+  font-size: 1.25rem;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+
+
+.close-btn{
+  position: absolute;
+  top: 27px;
+  right: 80px;
+  font-size: 35px;
+  cursor: pointer;
+  color: #fff;
+  opacity: 0;
+  
+}
+
+.close-btn.active{
+  opacity: 1;
+  animation: animate 0.5s linear;
+}
+
+@keyframes animate{
+  0%{
+    transform: scale(1);
+  }
+  25%{
+    transform: scale(1.2);
+  }
+  50%{
+    transform: scale(1.5);
+  }
+  75%{
+    transform: scale(1.2);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+/* SEARCH BAR END  */
+.ing-card-cont{
+  padding: 1vh;
+}
+
+
+.ing-card{
+  background-color: rgb(233, 227, 219);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4vh;
+  padding: 1vh;
+  border-radius: 1vh;
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+.ing-img-cont{
+  width: 7vh;
+  height: 7vh;
+  border-radius: 1vh;
+  box-shadow: 5px 5px 30px 7px rgba(0, 0, 0, 0.25),
+    -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  transition: 0.4s;
+  overflow: hidden;
+}
+.dec-cont{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  
+}
+.card-title{
+  text-transform: capitalize;
+}
+.cost-select{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+}
+

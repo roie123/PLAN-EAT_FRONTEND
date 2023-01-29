@@ -7,11 +7,12 @@ import AddCircleIcon from '@mui/icons-material/AddCircleOutline';
 import { Ingredient } from '../../MODELS/Ingredient';
 import MoneyIcon from '@mui/icons-material/AttachMoney';
 import { IngredientType } from '../../MODELS/ENUMS/IngredientType';
-import { Link } from 'react-router-dom';
+import {Link, Route, Routes} from 'react-router-dom';
 import ChooseIngredients from './ChooseIngredient';
-import { NewRecipeValues } from '../../SERVICES/NewRecipeContext';
+import { NewRecipeValuesContext } from '../../SERVICES/NewRecipeContext';
 import Test from './Test';
 import { json } from 'stream/consumers';
+import React from "react";
 interface AddNewRecipeProp{
     selectedRecipe : Recipe;
    
@@ -27,53 +28,53 @@ export default function AddNewRecipe(recipe:AddNewRecipeProp){
     id:0
 
   }
-  let defaultRecipe:Recipe ={
-    id:0,
-    imgUrl:'cxvz',
-    estimatedPrice:0,
-    ingredients:[],
-    name:"deaf"
+  // let defaultRecipe:Recipe ={
+  //   id:0,
+  //   imgUrl:'cxvz',
+  //   estimatedPrice:0,
+  //   ingredients:[],
+  //   name:"deaf"
+  //
+  // }
+  const [defaultRecipe,setDefaultRecipe] = useState<Recipe>({
+      id:0,
+      imgUrl:'NO',
+      estimatedPrice:0,
+      ingredients:[],
+      name:"NO"})
 
-  }
+
   ///DISPLAY SELECTION 
 const [displaySelection, setdisplaySelection] = useState<number>(1);
   //THE INGREDIENTS HOOK AND LOGIC 
   const [ingredients, setIngridients] = useState<Ingredient[]>([]) 
   const handleAddIngredient = (ingredients:Ingredient[] , finished : boolean)=>{
     setIngridients(ingredients);
-    console.log(ingredients);
   }
-  const ingredientsToDisplay :string[] = (Object.keys(IngredientType) as Array<keyof typeof IngredientType>);
   const [showingChoosingSelectionMethod, setshowingChoosingSelectionMethod] = useState<boolean>(false);
   ///END OF INGREDIENT LOGIC 
 
   const {register , handleSubmit} = useForm<Recipe>();
   const [selectedImg ,setSelectedImage] = useState<string>('https://w7.pngwing.com/pngs/269/105/png-transparent-cuideo-dish-computer-icons-menu-restaurant-dish-miscellaneous-food-text.png');
-  const onSave : SubmitHandler<Recipe> = (formValues)=> {
-    formValues.imgUrl= selectedImg;
-    console.log(formValues);
-     defaultRecipe.imgUrl =selectedImg ;
-     defaultRecipe.name = formValues.name;
-     defaultRecipe.ingredients = ingredients;
-    console.log(defaultRecipe);
-    setdisplaySelection(2);
-    createRecipe(formValues,recipe.familyId);
-  }
-  
-  console.log(ingredients);
-  
 
-  const handleFormEvent = (values:Recipe) => {
-    
-    localStorage.setItem('recipeName' , JSON.stringify(values.name));
-    localStorage.setItem('recipeImgUrl',JSON.stringify(selectedImg));
-    localStorage.setItem('familyId',recipe.familyId.toString());
-    let temp:string= JSON.stringify(localStorage.getItem('recipeImgUrl')?.toString());
-    values.imgUrl = temp;
-    console.log(temp);
-    window.location.href = "/add-ingredients"
 
-  }
+  useEffect(()=>{} , [defaultRecipe]);
+
+ function scrollToChild(values:Recipe) {
+
+    const recipeToDeliver :Recipe ={
+        estimatedPrice: 0, id: 0, imgUrl: selectedImg, ingredients: [], name: values.name
+
+    }
+
+    console.log(recipeToDeliver);
+    const child= document.getElementById('choose-ingredients-comp');
+    // @ts-ignore
+    child.scrollIntoView({behavior:'smooth'})
+     setDefaultRecipe(recipeToDeliver);
+}
+
+  //
     const [recipeImg, setRecipeImg] = useState<string[]>(
         [
         'https://i1.wp.com/www.oursweetadventures.com/wp-content/uploads/2019/10/Spaghetti-Carbonara-2.jpg?resize=720%2C720&ssl=1',
@@ -89,11 +90,12 @@ const [displaySelection, setdisplaySelection] = useState<number>(1);
           setSelectedImage((...prev) => value);
       
       }
+
     
     return(
       <>
       {(displaySelection===1) ? ( 
-      <form  className="all-cont" onSubmit={handleSubmit(handleFormEvent)}> 
+      <form  className="all-cont" onSubmit={handleSubmit(scrollToChild)}>
     
     
   
@@ -106,7 +108,7 @@ const [displaySelection, setdisplaySelection] = useState<number>(1);
 
   <div className='label-input-cont'>
     <label >Recipe Name</label>
-  <input {...register("name")} type="text" required    />
+  <input {...register("name")}  type="text" required    />
   </div>
 
 
@@ -141,7 +143,7 @@ const [displaySelection, setdisplaySelection] = useState<number>(1);
   </div>
   
   </div>
-  <button className='main-button' type='submit'   >Choose Ingredients</button>
+  <button className='main-button' type='submit'    >Choose Ingredients</button>
   {(showingChoosingSelectionMethod) ? (
 
     <>
@@ -158,9 +160,15 @@ const [displaySelection, setdisplaySelection] = useState<number>(1);
   </form>):(null)} 
   {/* END OF THE DISPLAY SELECTION 1 */}
   {(displaySelection===2) ? (<ChooseIngredients />):(null)}
-       
-    
-    
+
+
+        <NewRecipeValuesContext.Provider value={defaultRecipe}>
+            <div id={'choose-ingredients-comp'}>
+                <ChooseIngredients />
+
+            </div>
+
+        </NewRecipeValuesContext.Provider>
 
     </>
    

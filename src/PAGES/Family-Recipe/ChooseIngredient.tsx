@@ -1,78 +1,114 @@
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import IngredientTypeCard from "../../GENERAL-COMPONENTS/IngredientTypeCard";
-import {getAllIngredientTypes} from '../../SERVICES/IngredientService';
+import {getAllIngredientsBySearch, getAllIngredientTypes} from '../../SERVICES/IngredientService';
 import SearchIcon from '@mui/icons-material/Search';
 import MoneyIcon from '@mui/icons-material/MonetizationOn';
 import './ChooseIngredientsStyles.css'
 import { IngredientType } from "../../MODELS/ENUMS/IngredientType";
+import { Ingredient } from "../../MODELS/Ingredient";
+import { SubmitHandler, useForm } from "react-hook-form";
+import IngredientTypeList from "../../GENERAL-COMPONENTS/IngredientComponents/IngredientTypeList";
+import IngredientCard from "../../GENERAL-COMPONENTS/IngredientComponents/IngredientCard";
+import Recipe from "../../MODELS/Recipe";
+import { createRecipe } from "../../SERVICES/RecipeService";
 
 
-interface ChooseIngredientProps{
 
-}
 export default  function ChooseIngredients(){
-    
-    ///CALLING THE INGREDIENT TYPES HERE 
-    const [ingredientTypeInString , setIngredientTypeInString] = useState<string[]>([]);
-    // USING USE EFFECT TO CALL A ASYNC FUNC 
+let defaultRecipe:Recipe={
+  id: 0,
+  name: "",
+  estimatedPrice: 0,
+  ingredients: []
+}
+  //THE SELECTED INGREDIENTS TO MOVE TO CHOOSE INGREDIENT 
+
+  const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]); 
+
+//ADDING THE USER IS FINISHED
+// const [userIsFinished, setuserIsFinished] = useState<boolean>(false); 
+const [userIsFinished, setuserIsFinished] = useState(false);
+
+   
+    ///CALLING INGREDIENT ITEMS BY SEARCH FEATURE
+    const [searchQuery, setsearchQuery] = useState<string>('c'); 
+    const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+
+    //ADDING INGREDIENT FROM THE CHILD ELEMENT 
+
+
+    const handleAddingIngredient=(ingredient: Ingredient,finished:boolean) => {
+      setSelectedIngredients([...selectedIngredients,ingredient])
+      console.log("INGREDIENT FROM  CHOOSE");
+      console.log(selectedIngredients);
+    }
+ 
     useEffect(()=>{
         (async ()=> {
-            const allIngredientTypes =await getAllIngredientTypes();
-            setIngredientTypeInString(allIngredientTypes);
+            const allIngredientsBySearch =await getAllIngredientsBySearch(searchQuery); 
+            setIngredients(allIngredientsBySearch);
+            console.log(allIngredientsBySearch);
         })();
-    },[]);
-    ////ADDING SELECTED INGREDIENT TYPES TO THE ARRAY
-    const [selectedIngredients, setselectedIngredients] = useState<string[]>([])
-    function addIng(ingredient:string){
-        setselectedIngredients([...selectedIngredients,ingredient]);
-    }
+    },[searchQuery]);
+
+function sendUserToDB(){
+  defaultRecipe.imgUrl = localStorage.getItem("recipeImgUrl")+"";
+  defaultRecipe.ingredients = selectedIngredients;
+  defaultRecipe.name = localStorage.getItem("recipeName")+"";
+  let familyId:number = Number(localStorage.getItem("familyId"));
+  console.log(defaultRecipe);
+  createRecipe(defaultRecipe,familyId);
+}
+
+
     
-  function showIng(){
-    console.log(selectedIngredients);
+ 
+
+  ///THE FORM SEARCH FEATURE 
+  interface SearchValue{
+    value:string
+  }
+  const {register , handleSubmit} = useForm<SearchValue>();
+  const onSave : SubmitHandler<SearchValue> = async (formValues)=> {
+    console.log(formValues.value);
+    setIngredients(await getAllIngredientsBySearch(formValues.value));
+    console.log(ingredients);
   }
 
 
+function preventDefaultAndSetIngredientSearchQuery(event:FormEvent, value:string){
+event.preventDefault();
+}
+const handleFormEvent = (event: FormEvent) => {
+    event.preventDefault();
+    handleSubmit(onSave)(event);
+  }
     return(
        
        
        <>
        <div className="search-wrapper">
   <div className="search-container">
-    <input type="text" className="search-input" placeholder="Search" />
+    <form onChange={handleFormEvent}>
+    <input type="text" {...register("value")}   className="search-input" placeholder="Search" />
+
+    </form>
     
   </div>
   </div>
-  <button className="main-button">DONE</button>
+  <div className="filter-buttons-cont">
+  <button className="search-button">Filter</button>
+  <button className="search-button">Sort</button>
+  <button className="search-button" onClick={()=>sendUserToDB() }>DONE</button>
 
-
-        <div>
- {ingredientTypeInString.map((ing) => (
-        
-        <div className="ing-card-cont" key={ing} >
-            <div className="ing-card" onClick={() => addIng(ing)}>
-                <div className="ing-img-cont">
-                    <img src={"https://www.bobtailfruit.co.uk/pub/media/catalog/product/cache/118fd06640efc949eafa2123c39b08e3/i/m/img_3622.png"}
-                     alt={ing} />
-                </div>
-                <div className="dec-cont">
-                    <h4 className="card-title">{ing}</h4>
-                    <div className="cost-select">
-                        <MoneyIcon sx={{fontSize:'1.7rem'}}/>
-                        <MoneyIcon sx={{fontSize:'2rem'}}/>
-                        <MoneyIcon sx={{fontSize:'2.5rem'}}/>
-                    </div>
-                </div>
-
-
-            </div>
-            
-            </div>    
-       ))}
-
-
-        </div>
+  </div>
       
-       
+
+
+
+      {ingredients.map((ing)=> (<><IngredientCard ingredient={ing} onClick={()=> handleAddingIngredient(ing,userIsFinished)} /></> ))} 
+<IngredientTypeList/>
+
        </>
 
 

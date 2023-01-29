@@ -1,5 +1,5 @@
 import { Button, MenuItem, Select, TextField } from '@mui/material';
-import react, { FormEvent, useState } from 'react';
+import react, { createContext, FormEvent, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Recipe from '../../MODELS/Recipe';
 import { createRecipe } from '../../SERVICES/RecipeService';
@@ -9,6 +9,9 @@ import MoneyIcon from '@mui/icons-material/AttachMoney';
 import { IngredientType } from '../../MODELS/ENUMS/IngredientType';
 import { Link } from 'react-router-dom';
 import ChooseIngredients from './ChooseIngredient';
+import { NewRecipeValues } from '../../SERVICES/NewRecipeContext';
+import Test from './Test';
+import { json } from 'stream/consumers';
 interface AddNewRecipeProp{
     selectedRecipe : Recipe;
    
@@ -18,30 +21,58 @@ interface AddNewRecipeProp{
 
 
 export default function AddNewRecipe(recipe:AddNewRecipeProp){
-  const {register , handleSubmit} = useForm<Recipe>();
-  const [selectedImg ,setSelectedImage] = useState<string>('https://w7.pngwing.com/pngs/269/105/png-transparent-cuideo-dish-computer-icons-menu-restaurant-dish-miscellaneous-food-text.png');
-  const onSave : SubmitHandler<Recipe> = (formValues)=> {
-    formValues.imgUrl= selectedImg;
-    console.log(formValues);
-    createRecipe(formValues,recipe.familyId);
-  }
   const ing: Ingredient={
     name : '', 
     price: -1,
     id:0
 
   }
+  let defaultRecipe:Recipe ={
+    id:0,
+    imgUrl:'cxvz',
+    estimatedPrice:0,
+    ingredients:[],
+    name:"deaf"
+
+  }
+  ///DISPLAY SELECTION 
+const [displaySelection, setdisplaySelection] = useState<number>(1);
   //THE INGREDIENTS HOOK AND LOGIC 
-  const [ingredients, setIngridients] = useState<Ingredient[]>([])
+  const [ingredients, setIngridients] = useState<Ingredient[]>([]) 
+  const handleAddIngredient = (ingredients:Ingredient[] , finished : boolean)=>{
+    setIngridients(ingredients);
+    console.log(ingredients);
+  }
   const ingredientsToDisplay :string[] = (Object.keys(IngredientType) as Array<keyof typeof IngredientType>);
   const [showingChoosingSelectionMethod, setshowingChoosingSelectionMethod] = useState<boolean>(false);
-
-
   ///END OF INGREDIENT LOGIC 
-  const handleFormEvent = (event: FormEvent) => {
-    // event.preventDefault();
-    handleSubmit(onSave)(event);
-    setshowingChoosingSelectionMethod(true);
+
+  const {register , handleSubmit} = useForm<Recipe>();
+  const [selectedImg ,setSelectedImage] = useState<string>('https://w7.pngwing.com/pngs/269/105/png-transparent-cuideo-dish-computer-icons-menu-restaurant-dish-miscellaneous-food-text.png');
+  const onSave : SubmitHandler<Recipe> = (formValues)=> {
+    formValues.imgUrl= selectedImg;
+    console.log(formValues);
+     defaultRecipe.imgUrl =selectedImg ;
+     defaultRecipe.name = formValues.name;
+     defaultRecipe.ingredients = ingredients;
+    console.log(defaultRecipe);
+    setdisplaySelection(2);
+    createRecipe(formValues,recipe.familyId);
+  }
+  
+  console.log(ingredients);
+  
+
+  const handleFormEvent = (values:Recipe) => {
+    
+    localStorage.setItem('recipeName' , JSON.stringify(values.name));
+    localStorage.setItem('recipeImgUrl',JSON.stringify(selectedImg));
+    localStorage.setItem('familyId',recipe.familyId.toString());
+    let temp:string= JSON.stringify(localStorage.getItem('recipeImgUrl')?.toString());
+    values.imgUrl = temp;
+    console.log(temp);
+    window.location.href = "/add-ingredients"
+
   }
     const [recipeImg, setRecipeImg] = useState<string[]>(
         [
@@ -61,69 +92,73 @@ export default function AddNewRecipe(recipe:AddNewRecipeProp){
     
     return(
       <>
-        <form  className="all-cont" onSubmit={handleFormEvent}> 
+      {(displaySelection===1) ? ( 
+      <form  className="all-cont" onSubmit={handleSubmit(handleFormEvent)}> 
     
     
   
      
-      <div className="new-recipe-cont">
-    <h4 className='new-recipe-title'>Let's Add Some Of  The <span>{recipe.familyName}</span> Family Recipes !</h4>
-    <div className="form-cont">
-    <div className='seperate-title'>
+    <div className="new-recipe-cont">
+  <h4 className='new-recipe-title'>Let's Add Some Of  The <span>{recipe.familyName}</span> Family Recipes !</h4>
+  <div className="form-cont">
+  <div className='seperate-title'>
 
 
-    <div className='label-input-cont'>
-      <label >Recipe Name</label>
-    <input {...register("name")} type="text" required    />
-    </div>
+  <div className='label-input-cont'>
+    <label >Recipe Name</label>
+  <input {...register("name")} type="text" required    />
+  </div>
 
 
+
+
+  </div>
   
 
-    </div>
-    
 
 
 
-
-    <div className='seperate-title'>
-    <h4 className='recipe-pic-title'>Select An Image Or Upload Your Own </h4>
-    
-    <div  className='img-select-cont'>
-    
-    {recipeImg.map((img) => (
-      <>
-      <div key={img} className="img-cont">
-        <img src={img} className='img-select' onClick={() => setSelectedImage((...prev) => img)}  alt="image of recipe" />
-      </div>
-    
-     
-      </>
-      ))
-      }
-      </div>
-    
-    </div>
-    
-    
-    </div>
-    
-    </div>
-    <button className='main-button' type='button' onClick={() => setshowingChoosingSelectionMethod(true)} >Choose Ingredients</button>
-    {(showingChoosingSelectionMethod) ? (
-
-      <>
-      <div className="ingredient-selection-method-buttons-cont">
-        <button type='button' className='main-button'>Let Us Help</button>
-        <button type='button' className='main-button'>Select Items</button>
-      </div>
-      </>
-    ):null}
-      
-     
+  <div className='seperate-title'>
+  <h4 className='recipe-pic-title'>Select An Image Or Upload Your Own </h4>
   
+  <div  className='img-select-cont'>
+  
+  {recipeImg.map((img) => (
+    <>
+    <div key={img} className="img-cont">
+      <img src={img} className='img-select' onClick={() => setSelectedImage((...prev) => img)}  alt="image of recipe" />
+    </div>
+  
+   
+    </>
+    ))
+    }
+    </div>
+  
+  </div>
+  
+  
+  </div>
+  
+  </div>
+  <button className='main-button' type='submit'   >Choose Ingredients</button>
+  {(showingChoosingSelectionMethod) ? (
 
-    </form>
+    <>
+    <div className="ingredient-selection-method-buttons-cont">
+      <button type='button'  className='main-button'>Let Us Help</button>
+      <button type='button' className='main-button'>Select Items</button>
+    </div>
+    </>
+  ):null}
+    
+   
+
+
+  </form>):(null)} 
+  {/* END OF THE DISPLAY SELECTION 1 */}
+  {(displaySelection===2) ? (<ChooseIngredients />):(null)}
+       
     
     
 

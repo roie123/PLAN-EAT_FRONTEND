@@ -3,7 +3,7 @@ import { Ingredient } from "./Ingredient";
 
 export default interface Recipe{
     id:number,
-    imgUrl:string,
+    imgUrl?:string,
     name:string ,
     estimatedPrice:number,
     ingredients: Ingredient[],

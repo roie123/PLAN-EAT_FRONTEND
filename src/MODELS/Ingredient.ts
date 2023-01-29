@@ -4,8 +4,9 @@ export interface Ingredient{
 id ?:number ,
 name?:string,
 price ?:number ,
-priceCategory?:PriceCategory
-
+priceCategory?:PriceCategory,
+imgUrl?:string,
+ingredientType?:string
 }
 
 

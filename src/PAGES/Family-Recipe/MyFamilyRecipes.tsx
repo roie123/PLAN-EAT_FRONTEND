@@ -88,10 +88,7 @@ useEffect(() => {
 
 </div>
 
-{(componentSelector===3) ? (<h4 className='empty-div'>Please Select A Recipe To Edit</h4>) : <div className='empty-div'></div> }
-{(componentSelector===4) ? (<h4 className='empty-div'>Please Select A Recipe To Delete</h4>) : <div className='empty-div'></div> }
 
-  
  {(componentSelector===1) ? (
   
   

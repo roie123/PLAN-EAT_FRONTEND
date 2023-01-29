@@ -1,11 +1,10 @@
 import axios from 'axios';
-import react from 'react'
+import react, { useState } from 'react'
 import Recipe from '../MODELS/Recipe';
 
 
 
 const baseURL = 'http://localhost:8080/api/recipe';
-
 export const getRecipe = async (id: number): Promise<Recipe> => {
     try {
         const response = await axios.get(`${baseURL}/${id}`);
@@ -19,7 +18,8 @@ export const getRecipe = async (id: number): Promise<Recipe> => {
 export const createRecipe = async (recipe: Recipe,familyId : number): Promise<Recipe> => {
     try {
         const response = await axios.post(`${baseURL}/addToFamily/${familyId}`, recipe);
-        return response.data;
+        
+        return response.data as Recipe;
     } catch (error) {
         throw error;
     }

@@ -21,7 +21,50 @@
   letter-spacing: 1px;
 }
 
+.filter-buttons-cont{
+  display: flex;
+}
 
+.search-button{
+    align-items: center;
+    background-color: rgba(240, 240, 240, 0.26);
+    border: 1px solid #DFDFDF;
+    border-radius: 16px;
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    display: flex;
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    justify-content: center;
+    line-height: 28px;
+    max-width: 100%;
+    padding: 14px 22px;
+    text-decoration: none;
+    transition: all .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+  }
+  
+  .button-46:active,
+  .button-46:hover {
+    outline: 0;
+  }
+  
+  .button-46:hover {
+    background-color: #FFFFFF;
+    border-color: rgba(0, 0, 0, 0.19);
+  }
+  
+  @media (min-width: 768px) {
+    .button-46 {
+      font-size: 20px;
+      min-width: 200px;
+      padding: 14px 16px;
+    }
+  }
 
 .close-btn{
   position: absolute;
@@ -60,18 +103,40 @@
 /* SEARCH BAR END  */
 .ing-card-cont{
   padding: 1vh;
+  display: flex;
+  flex-direction: column;
+  
 }
+.map-title{
+  text-align: center;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  letter-spacing: 0.7vh;
 
-
+}
+.map-cont{
+  display: grid;
+  grid-template-columns: repeat(4,11vh);
+  height: 10vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: black;
+  border-style: solid ;
+}
 .ing-card{
   background-color: rgb(233, 227, 219);
-  width: 100%;
+  min-width: 3vh;
+  width: fit-content;
+  max-width: 20vw;
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 4vh;
   padding: 1vh;
   border-radius: 1vh;
+  overflow: hidden;
   box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }
 

@@ -18,6 +18,16 @@ export const getAllActiveIngredients = async() : Promise<Ingredient[]> => {
             throw error;
         }    
 }
+export const getAllIngredientsBySearch = async(searchPattern:string) : Promise<Ingredient[]> => {
+    try{
+        console.log(`${apiUrl}/filter/${searchPattern}`)
+        const response = await axios.get(`${apiUrl}/filter/${searchPattern}`);
+        return response.data;
+    
+        }catch(error){
+            throw error;
+        }    
+}
 export const getAllIngredientTypes = async() : Promise<string[]> => {
     try{
         const response = await axios.get(`${apiUrl}/getTypes `);

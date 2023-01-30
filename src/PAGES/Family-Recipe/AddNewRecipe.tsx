@@ -46,6 +46,7 @@ export default function AddNewRecipe(recipe:AddNewRecipeProp){
 
   ///DISPLAY SELECTION 
 const [displaySelection, setdisplaySelection] = useState<number>(1);
+  useEffect(()=> {} ,  [displaySelection]);
   //THE INGREDIENTS HOOK AND LOGIC 
   const [ingredients, setIngridients] = useState<Ingredient[]>([]) 
   const handleAddIngredient = (ingredients:Ingredient[] , finished : boolean)=>{
@@ -60,19 +61,25 @@ const [displaySelection, setdisplaySelection] = useState<number>(1);
 
   useEffect(()=>{} , [defaultRecipe]);
 
- function scrollToChild(values:Recipe) {
+ async function scrollToChild(values: Recipe) {
 
-    const recipeToDeliver :Recipe ={
-        estimatedPrice: 0, id: 0, imgUrl: selectedImg, ingredients: [], name: values.name
+     const recipeToDeliver: Recipe = {
+         estimatedPrice: 0, id: 0, imgUrl: selectedImg, ingredients: [], name: values.name
 
-    }
-
-    console.log(recipeToDeliver);
-    const child= document.getElementById('choose-ingredients-comp');
-    // @ts-ignore
-    child.scrollIntoView({behavior:'smooth'})
+     }
+     console.log("++++++++");
+     console.log(recipeToDeliver);
+     console.log("+++++++");
+     const child = document.getElementById('choose-ingredients-comp');
      setDefaultRecipe(recipeToDeliver);
-}
+     console.log("---dfsdf---");
+     console.log(defaultRecipe);
+     console.log("---fsdds---");
+     await setdisplaySelection(2);
+     // @ts-ignore
+     child.scrollIntoView({behavior: 'smooth'})
+
+ }
 
   //
     const [recipeImg, setRecipeImg] = useState<string[]>(
@@ -91,7 +98,8 @@ const [displaySelection, setdisplaySelection] = useState<number>(1);
       
       }
 
-    
+
+
     return(
       <>
       {(displaySelection===1) ? ( 
@@ -159,16 +167,16 @@ const [displaySelection, setdisplaySelection] = useState<number>(1);
 
   </form>):(null)} 
   {/* END OF THE DISPLAY SELECTION 1 */}
-  {(displaySelection===2) ? (<ChooseIngredients />):(null)}
+  {(displaySelection===2) ? ( <NewRecipeValuesContext.Provider value={defaultRecipe}>
+      <div id={'choose-ingredients-comp'}>
+          <ChooseIngredients />
+
+      </div>
+
+  </NewRecipeValuesContext.Provider>):(null)}
 
 
-        <NewRecipeValuesContext.Provider value={defaultRecipe}>
-            <div id={'choose-ingredients-comp'}>
-                <ChooseIngredients />
 
-            </div>
-
-        </NewRecipeValuesContext.Provider>
 
     </>
    

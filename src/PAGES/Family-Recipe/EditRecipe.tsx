@@ -4,6 +4,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Recipe from '../../MODELS/Recipe';
 import { updateRecipe } from '../../SERVICES/RecipeService';
 import './MyFamilyRecipeStyle.css';
+import {EditRecipeContext} from "../../SERVICES/EditRecipeContext";
+import EditIngredients from "./EditIngredients";
+import ts from "typescript/lib/tsserverlibrary";
+import formatMessage = ts.server.formatMessage;
 
 
 
@@ -25,8 +29,7 @@ export default function EditRecipeWindow(editRecipeWindowProps:EditRecipeWindowP
 
     function handleChange(recipe:Recipe){
    
-        console.log(recipe)
-          setSelectedRecipe((...prev) => recipe);
+          setSelectedRecipe(() => recipe);
           
       }
 
@@ -39,13 +42,19 @@ export default function EditRecipeWindow(editRecipeWindowProps:EditRecipeWindowP
     const {register, handleSubmit} = useForm<Recipe>();
     const [selectedImg ,setSelectedImage] = useState<string>('https://w7.pngwing.com/pngs/269/105/png-transparent-cuideo-dish-computer-icons-menu-restaurant-dish-miscellaneous-food-text.png');
     const onSave:SubmitHandler<Recipe> = (formValues) => {
+        selectedRecipe.name=formValues.name;
         formValues.imgUrl= selectedImg;
-        console.log(formValues);
-        updateRecipe(editRecipeWindowProps.familyId,formValues);
-      }
+        formValues.id = selectedRecipe.id;
+        setSelectedRecipe(formValues);
+        console.log(selectedRecipe.id);
+
+    }
+
+
       const handleFormEvent = (event: FormEvent) => {
         // event.preventDefault();
         handleSubmit(onSave)(event);
+        setDisplaySelection(2);
       }
 
 ///RECIPE IMG ARRAY 
@@ -59,91 +68,86 @@ const [recipeImg, setRecipeImg] = useState<string[]>(
   
   ]
     );
-
+    /**
+     * This method will tell us what component will be displayed
+     */
+    const [displaySelection,setDisplaySelection] = useState<number>(1);
+    useEffect(()=>{} ,[displaySelection]);
 
 return(
 
 
 <>
-{(selectedRecipe.estimatedPrice===-1) ? (<div className="cards-list">
+    {(displaySelection===1) ? ( (selectedRecipe.estimatedPrice===-1) ? (<div className="cards-list">
+            {editRecipeWindowProps.recipes?.map((recipe)=>(
 
-{editRecipeWindowProps.recipes?.map((recipe)=>(
+                    <div key={recipe.id} className="card" onClick={() => handleChange(recipe)}>
+                        <div className="card_image"> <img src={recipe.imgUrl} alt={recipe.name} /> </div>
+                        <div className="card_title title-white">
+                            <p>{recipe.name}</p>
+                        </div>
+                    </div>
 
-  <div key={recipe.id} className="card" onClick={() => handleChange(recipe)}>
-    <div className="card_image"> <img src={recipe.imgUrl} alt={recipe.name} /> </div>
-    <div className="card_title title-white">
-      <p>{recipe.name}</p>
-    </div>
-  </div>
-  
-    )//End of thingy 
-    
-    )}
+                )//End of thingy
 
-    
-</div>)
-:
-<form  className="all-cont" onSubmit={handleFormEvent}> 
-    
-    <div className="new-recipe-cont">
-    <div className="form-cont">
-    <div className='seperate-title'>
+            )}
 
 
-      
-    <div className="label-input-cont">
+        </div>)
+        :
+        <form  className="all-cont" onSubmit={handleFormEvent}>
 
-    <label>Recipe Name</label>
-    <input {...register("name")}
-     type="text"
-      required
-      defaultValue={selectedRecipe.name} 
-      />
-      </div>
+            <div className="new-recipe-cont">
+                <div className="form-cont">
+                    <div className='seperate-title'>
 
-  <div className="label-input-cont">
-  <label>Price</label>
-    <input {...register("estimatedPrice")}
-     type="number"
-      required  
-      step={0.00000000000000001}
-      defaultValue={selectedRecipe.estimatedPrice}
-    />
 
-  </div>
-    
 
-    </div>
-    
-    
-    <div className='seperate-title'>
-    <h4 className='recipe-pic-title'>Select An Image Or Upload Your Own </h4>
-    
-    <div  className='img-select-cont'>
-    
-    {recipeImg.map((img) => (
-      <>
-      <div key={img} className="img-cont">
-        <img src={img} className='img-select' onClick={() => setSelectedImage((...prev) => img)}  alt="image of recipe" />
-      </div>
-    
-     
-      </>
-      ))
-      }
-      </div>
-    
-    </div>
-    
-    
-    </div>
-    
-    </div>
-    <button className='main-button' type='submit' >Done</button>
-    </form>
+                        <div className="label-input-cont">
 
+                            <label>Recipe Name</label>
+                            <input {...register("name")}
+                                   type="text"
+                                   required
+                                   defaultValue={selectedRecipe.name}
+                            />
+                        </div>
+
+
+
+
+                    </div>
+
+
+                    <h4 className='recipe-pic-title'>Select An Image Or Upload Your Own </h4>
+
+                    <div  className='img-select-cont'>
+
+                        {recipeImg.map((img) => (
+                            <>
+                                <div key={img} className="img-cont">
+                                    <img src={img} className='img-select' onClick={() => setSelectedImage((...prev) => img)}  alt="image of recipe" />
+                                </div>
+
+
+                            </>
+                        ))
+                        }
+                    </div>
+
+
+
+                </div>
+
+            </div>
+            <button className='main-button' type='submit' >Done</button>
+        </form> ) :<EditRecipeContext.Provider value={selectedRecipe}>
+        <EditIngredients id={selectedRecipe.id}/>
+    </EditRecipeContext.Provider>
+//END OF FORM ELEMENT !!!!}
 
 }
+()
 
 
 

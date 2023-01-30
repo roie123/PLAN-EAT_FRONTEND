@@ -1,57 +1,56 @@
-import React, {FormEvent, useContext, useEffect, useState} from "react";
-import IngredientTypeCard from "../../GENERAL-COMPONENTS/IngredientTypeCard";
-import {getAllIngredientsBySearch, getAllIngredientTypes} from '../../SERVICES/IngredientService';
-import SearchIcon from '@mui/icons-material/Search';
-import MoneyIcon from '@mui/icons-material/MonetizationOn';
-import './ChooseIngredientsStyles.css'
-import {IngredientType} from "../../MODELS/ENUMS/IngredientType";
-import {Ingredient} from "../../MODELS/Ingredient";
-import {SubmitHandler, useForm} from "react-hook-form";
-import IngredientTypeList from "../../GENERAL-COMPONENTS/IngredientComponents/IngredientTypeList";
-import IngredientCard from "../../GENERAL-COMPONENTS/IngredientComponents/IngredientCard";
+import react, {FormEvent, useContext, useEffect, useState} from 'react'
 import Recipe from "../../MODELS/Recipe";
-import {createRecipe} from "../../SERVICES/RecipeService";
 import {NewRecipeValuesContext} from "../../SERVICES/NewRecipeContext";
+import {Ingredient} from "../../MODELS/Ingredient";
+import {getAllIngredientsBySearch} from "../../SERVICES/IngredientService";
+import {createRecipe, updateRecipe} from "../../SERVICES/RecipeService";
+import {SubmitHandler, useForm} from "react-hook-form";
+import IngredientCard from "../../GENERAL-COMPONENTS/IngredientComponents/IngredientCard";
+import IngredientTypeList from "../../GENERAL-COMPONENTS/IngredientComponents/IngredientTypeList";
+import React from "react";
+import {EditRecipeContext} from "../../SERVICES/EditRecipeContext";
+
+interface EditIngredientsProps{
+    id:number;
+}
+
+export default  function EditIngredients (props:EditIngredientsProps) {
 
 
-export default function ChooseIngredients() {
     let defaultRecipe: Recipe = {
         id: 0,
         name: "",
         estimatedPrice: 0,
         ingredients: []
     }
-    const recipe: Recipe = useContext(NewRecipeValuesContext);
+    const recipe: Recipe = useContext(EditRecipeContext);
     const [recipeFromParent, setRecipeFromParent] = useState<Recipe>(recipe);
 
     useEffect(() => {
-        setRecipeFromParent(recipe)
-        console.log(recipe)
+        setRecipeFromParent(recipe);
     }, [recipe])
 
     useEffect(() => {
-        console.log(recipeFromParent)
     }, [recipeFromParent])
 
-    //THE SELECTED INGREDIENTS TO MOVE TO CHOOSE INGREDIENT
+//THE SELECTED INGREDIENTS TO MOVE TO CHOOSE INGREDIENT
 
     const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
 
 //ADDING THE USER IS FINISHED
-// const [userIsFinished, setuserIsFinished] = useState<boolean>(false); 
+// const [userIsFinished, setuserIsFinished] = useState<boolean>(false);
     const [userIsFinished, setuserIsFinished] = useState(false);
 
 
-    ///CALLING INGREDIENT ITEMS BY SEARCH FEATURE
+///CALLING INGREDIENT ITEMS BY SEARCH FEATURE
     const [searchQuery, setsearchQuery] = useState<string>('c');
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
-    //ADDING INGREDIENT FROM THE CHILD ELEMENT 
+//ADDING INGREDIENT FROM THE CHILD ELEMENT
 
 
     const handleAddingIngredient = (ingredient: Ingredient, finished: boolean) => {
         setSelectedIngredients([...selectedIngredients, ingredient])
-        console.log(selectedIngredients)
     }
 
 
@@ -62,16 +61,16 @@ export default function ChooseIngredients() {
         })();
     }, [searchQuery]);
 
-    function sendUserToDB() {
-        let familyId: number = Number(localStorage.getItem("familyId"));
+    function sendRecipeToBeUpdated() {
+        recipeFromParent.id = props.id;
         recipeFromParent.ingredients = selectedIngredients;
         console.log(recipeFromParent);
-        createRecipe(recipeFromParent, familyId);
-        // window.location.href = '/my-family-recipes';
+        updateRecipe(recipeFromParent.id, recipeFromParent);
+        window.location.href = '/my-family-recipes';
     }
 
 
-    ///THE FORM SEARCH FEATURE
+///THE FORM SEARCH FEATURE
     interface SearchValue {
         value: string
     }
@@ -106,7 +105,7 @@ export default function ChooseIngredients() {
             <div className="filter-buttons-cont">
                 <button className="search-button">Filter</button>
                 <button className="search-button">Sort</button>
-                <button className="search-button" onClick={() => sendUserToDB()}>DONE</button>
+                <button className="search-button" onClick={() => sendRecipeToBeUpdated()}>DONE</button>
 
             </div>
 
@@ -119,5 +118,4 @@ export default function ChooseIngredients() {
 
 
     )
-
 }

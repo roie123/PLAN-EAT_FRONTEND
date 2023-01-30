@@ -17,6 +17,7 @@ import Home from './PAGES/Home';
 import Test from './PAGES/Family-Recipe/Test';
 import {NewRecipeValuesContext} from './SERVICES/NewRecipeContext'
 import ChooseIngredients from './PAGES/Family-Recipe/ChooseIngredient';
+import EditIngredients from "./PAGES/Family-Recipe/EditIngredients";
 function App() {
   const defaultFamily :Family ={
     id:0,
@@ -57,6 +58,7 @@ function App() {
   <Route path='/new-recipe' element={<AddNewRecipe/>}/>
   <Route path='/cart' element={<CartPage/>}/>
     <Route path='/add-ingredients' element={<ChooseIngredients/>}/>
+    {/*<Route path='/edit-ingredients' element={<EditIngredients/>}/>*/}
 
 
 

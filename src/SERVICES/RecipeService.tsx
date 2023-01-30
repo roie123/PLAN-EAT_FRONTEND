@@ -27,7 +27,7 @@ export const createRecipe = async (recipe: Recipe,familyId : number): Promise<Re
 
 export const updateRecipe = async (id: number, recipe: Recipe): Promise<Recipe> => {
     try {
-        const response = await axios.put(`${baseURL}/addToFamily/${id}`, recipe);
+        const response = await axios.put(`${baseURL}/${id}`, recipe);
         return response.data;
     } catch (error) {
         throw error;

@@ -4,6 +4,7 @@ import { Family } from '../MODELS/Family';
 
 
 const defaultFamily :Family ={
+    dayList: [], email: "", familyMembers: [], imgUrl: "", isActive: false, name: "", password: "",
     id:0,
     favoriteRecipes:[]
 }

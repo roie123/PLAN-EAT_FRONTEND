@@ -17,6 +17,7 @@ import {State} from "../Redux/reducers";
 import {bindActionCreators} from "redux";
 import {updateMealAction} from "../Redux/action-creators/mealActionCreator";
 import AddToMeal from "./Edit-Meal/AddToMeal";
+import EditMeal from "./Edit-Meal/EditMeal";
 
 export default function HomePage(){
 
@@ -52,6 +53,11 @@ export default function HomePage(){
       setDisplaySelection(2);
       updateMealFunc(meal);
   }
+    function handleClickOnEditButton(meal:Meal){
+        setDisplaySelection(3);
+        updateMealFunc(meal);
+    }
+
     return (
         <>
         {(displaySelection===1) ? ( <>
@@ -91,7 +97,7 @@ export default function HomePage(){
 
                                     </div>
                                     <div className="nice-points-cont">
-                                        <EditIcon sx={{fontSize:'2.5rem' , cursor:'pointer'}}  className="nice-point" style={{animationDelay:'0.25s'}}></EditIcon>
+                                        <EditIcon onClick={()=>handleClickOnEditButton(meal)} sx={{fontSize:'2.5rem' , cursor:'pointer'}}  className="nice-point" style={{animationDelay:'0.25s'}}></EditIcon>
                                         <AddIcon onClick={()=>handleClickOnAddButton(meal)}  sx={{fontSize:'2.5rem' , cursor:'pointer'}} className="nice-point" style={{animationDelay:'0.75s'}}></AddIcon>
                                         {/* <DeleteIcon sx={{fontSize:'2rem'}}  className="nice-point" style={{animationDelay:'0.75s'}}></DeleteIcon> */}
 
@@ -111,6 +117,7 @@ export default function HomePage(){
 
         </>) :null}
         {(displaySelection===2) ? (<AddToMeal recipes={family.favoriteRecipes}/>) :null}
+        {(displaySelection===3) ? (<EditMeal recipes={family.favoriteRecipes}  />) :null}
 
         </>
 

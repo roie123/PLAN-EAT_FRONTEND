@@ -18,7 +18,7 @@ export default function FamilyAvatarsList() {
 
       {family?.familyMembers?.map((user)=> (
         <>
-        <div className='user-cont'>
+        <div  className='user-cont'>
         <Avatar
         sx={{ bgcolor: deepOrange[500] , borderStyle:'groove' , borderColor:'lightgray'}}
         alt={user.name}

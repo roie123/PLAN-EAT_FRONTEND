@@ -7,25 +7,8 @@ export default interface Recipe{
     name:string ,
     estimatedPrice:number,
     ingredients: Ingredient[],
-    
+    timeToMake?:number //added at 2.2.23 TODO: implement in the addRecipe feature and EditRecipe feature
+
+
 }
 
-/**
- *   private Long id;
-    private String name;
-    private boolean isRecommended = false;
-    private double estimatedPrice;
-    private boolean isActive = true;
-    private String imgUrl;
-
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-    private List<Ingredient> ingredients = new ArrayList<>();
-
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-    private Meal meal;
-
-    @JsonIgnore
-    @ManyToOne
-    private Family family;
-
- */

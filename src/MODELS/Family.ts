@@ -6,7 +6,7 @@ export interface Family{
     id:number,
     name?:string,
     isActive?:boolean,
-    familyMembers?:User[],
+    familyMembers:User[],
     dayList ?: Day[],
     favoriteRecipes :Recipe[],
     email ?:string,

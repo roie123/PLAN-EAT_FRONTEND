@@ -16,6 +16,7 @@ import {Meal} from "./MODELS/Meal";
 
 function App() {
     const defaultFamily: Family = {
+        dayList: [], email: "", familyMembers: [], imgUrl: "", isActive: false, name: "", password: "",
         id: 0,
         favoriteRecipes: []
     }

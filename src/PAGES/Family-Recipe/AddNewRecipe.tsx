@@ -41,7 +41,9 @@ export default function AddNewRecipe(recipe:AddNewRecipeProp){
       imgUrl:'NO',
       estimatedPrice:0,
       ingredients:[],
-      name:"NO"})
+      name:"NO",
+        timeToMake:0
+  })
 
 
   ///DISPLAY SELECTION 
@@ -64,6 +66,7 @@ const [displaySelection, setdisplaySelection] = useState<number>(1);
  async function scrollToChild(values: Recipe) {
 
      const recipeToDeliver: Recipe = {
+         timeToMake: 0,
          estimatedPrice: 0, id: 0, imgUrl: selectedImg, ingredients: [], name: values.name
 
      }

@@ -12,7 +12,8 @@
     overflow-x: scroll;
     height: 20vh;
 }
-.butt-cont{
+
+.butt-cont {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -20,6 +21,7 @@
     justify-content: center;
     margin-bottom: 2vh;
 }
+
 .button-5 {
     align-items: center;
     background-clip: padding-box;

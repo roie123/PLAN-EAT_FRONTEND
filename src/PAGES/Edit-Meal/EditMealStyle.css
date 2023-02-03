@@ -1,4 +1,4 @@
-.edit-meal-cont{
+.edit-meal-cont {
     padding: 3vh;
     text-align: center;
     display: flex;
@@ -10,10 +10,11 @@
 }
 
 
-.title-cont{
+.title-cont {
     margin-bottom: 0;
     margin-top: 0;
 }
+
 .radio-cont {
     display: flex;
     flex-direction: row;
@@ -44,17 +45,19 @@ input[type="number"] {
 }
 
 
-.radio-style{
+.radio-style {
     width: 7vh;
     height: 7vh;
     border-style: hidden;
     box-shadow: none;
     margin: 1vh;
 }
+
 input[type="radio"]:checked::before {
     transform: scale(1);
 }
-.add-and-remove-cont{
+
+.add-and-remove-cont {
     display: flex;
     flex-direction: row;
     padding: 2vh;
@@ -107,7 +110,7 @@ input[type="radio"]:checked::before {
     transform: translateY(0);
 }
 
-.recipe-list-cont{
+.recipe-list-cont {
     overflow-y: scroll;
     height: 22vh;
     width: 90%;
@@ -118,8 +121,9 @@ input[type="radio"]:checked::before {
     padding: 3vh;
     padding-top: 1vh;
 }
-.recipe-tag{
-border-style: dot-dash;
+
+.recipe-tag {
+    border-style: dot-dash;
     margin-top: 2vh;
     display: flex;
     flex-direction: row;
@@ -127,7 +131,8 @@ border-style: dot-dash;
     font-weight: bold;
     height: 5vh;
 }
-.recipe-tag img{
+
+.recipe-tag img {
     width: 4vh;
     height: 4vh;
     border-radius: 50%;
@@ -136,9 +141,10 @@ border-style: dot-dash;
     margin-bottom: auto;
 }
 
-.recipe-tag button{
+.recipe-tag button {
     border-style: hidden;
 }
-.useful-but{
-    background-color:inherit;
+
+.useful-but {
+    background-color: inherit;
 }

@@ -25,7 +25,7 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
         const recepies: Recipe[] = [...selectedRecipes, ...selectedMealFromHomeComponent.recipeList];
         selectedMealFromHomeComponent.recipeList = recepies;
         updateMeal(selectedMealFromHomeComponent.id, selectedMealFromHomeComponent);
-        window.location.href='/'
+        window.location.href = '/'
     }
 
     /**
@@ -38,7 +38,7 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
      * @param recipe
      */
     function handleClickOnImage(recipe: Recipe) {
-        recipe.id= 0;
+        recipe.id = 0;
         setselectedRecipes((prevState) => [...prevState, recipe]);
 
     }
@@ -86,7 +86,7 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
 
             <div className="selected-recipes-cont">
                 {selectedRecipes.map((recipe) => (
-                    <div key={recipe.id+10} className="card" onClick={() => handleClickOnImageToRemove(recipe)}>
+                    <div key={recipe.id + 10} className="card" onClick={() => handleClickOnImageToRemove(recipe)}>
                         <div className="card_image"><img src={recipe.imgUrl} alt={recipe.name}/></div>
                         <div className="card_title title-white">
                             <p>{recipe.name}</p>

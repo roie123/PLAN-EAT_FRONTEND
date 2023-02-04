@@ -6,8 +6,6 @@ import HomePage from './PAGES/Home';
 import {FamilyContext} from './Provider/FamilyProvider';
 import {getFamily} from './SERVICES/FamilyService';
 import {Family} from './MODELS/Family';
-import MyFamilyPage from './PAGES/My-Family/MyFamilyPage'
-import AddNewUser from './PAGES/My-Family/AddNewUser/AddNewUserPage'
 import MyFamilyRecipes from './PAGES/Family-Recipe/MyFamilyRecipes'
 import AddNewRecipe from './PAGES/Family-Recipe/New-Recipe/NewRecipePage'
 import CartPage from './PAGES/Cart/CartPage'
@@ -55,8 +53,6 @@ function App() {
                         <Route path='' element={<HomePage/>}/>
 
 
-                        <Route path='/my-family' element={<MyFamilyPage/>}/>
-                        <Route path='/add-new-user' element={<AddNewUser/>}/>
                         <Route path='/my-family-recipes' element={<MyFamilyRecipes/>}/>
                         <Route path='/new-recipe' element={<AddNewRecipe/>}/>
                         <Route path='/cart' element={<CartPage/>}/>

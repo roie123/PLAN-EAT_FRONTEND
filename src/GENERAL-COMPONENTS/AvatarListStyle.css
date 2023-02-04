@@ -1,16 +1,15 @@
-.avatar-cont{
+.avatar-cont {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow-x: scroll;
-   
-    
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
 }
-.user-cont{
+
+.user-cont {
     display: flex;
     flex-direction: column;
     text-align: center;

@@ -6,7 +6,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddNewUser from "./AddNewUser/AddNewUserPage";
-
+import EditUser from "./EditUser";
+import {User} from "../../MODELS/User";
+import {deleteUser} from "../../SERVICES/UserService";
 interface MyFamilyPageProps {
     family: Family
 }
@@ -20,16 +22,32 @@ export default function MyFamilyPage(props: MyFamilyPageProps) {
      * (3) For Edit User
      */
     const [dispalySelection, setdispalySelection] = useState<number>(1);
+const emptyUser:User={
+    favoriteRecipes: [], id: 0, imgUrl: "", isActive: false, name: ""
+
+}
+    /**
+     * This const stores the selected user by the user
+     */
+    const [selectedUser,setselectedUser] =useState<User>(emptyUser);
 
 
     function handleAddUserButton() {
         setdispalySelection(2);
     }
 
-    function handleEditUserButton(){
+    function handleEditUserButton(user:User){
+        setselectedUser(user);
         setdispalySelection(3);
     }
 
+    /**
+     * This function deletes the user
+     * @param user the user to be deleted
+     */
+    function handleDeleteButton(user:User){
+        deleteUser(user.id);
+}
     return (
         <>
             {(dispalySelection === 1) ? <>
@@ -50,8 +68,8 @@ export default function MyFamilyPage(props: MyFamilyPageProps) {
                                 <div className="name-and-buttons">
                                     <h4>{user.name}</h4>
                                     <div className="buttons">
-                                        <EditIcon onClick={()=> handleEditUserButton()} sx={{fontSize: '2.2rem'}}/>
-                                        <DeleteIcon sx={{fontSize: '2.2rem'}}/>
+                                        <EditIcon onClick={()=> handleEditUserButton(user)} sx={{fontSize: '2.2rem'}}/>
+                                        <DeleteIcon onClick={()=> handleDeleteButton(user)} sx={{fontSize: '2.2rem'}}/>
                                     </div>
                                 </div>
                             </div>
@@ -68,6 +86,7 @@ export default function MyFamilyPage(props: MyFamilyPageProps) {
                 </div>
             </> : null}
             {(dispalySelection === 2) ? (<AddNewUser family={props.family}/>) : null}
+            {(dispalySelection === 3) ? (<EditUser family={props.family} selectedUser={selectedUser}/>) : null}
 
 
         </>

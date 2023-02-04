@@ -14,23 +14,21 @@ export default function FamilyAvatarsList() {
     <>
    
     <div className='avatar-cont'>
-    <Stack direction="row"  spacing={3}>
+    <Stack direction="row"   spacing={1}>
 
       {family?.familyMembers?.map((user)=> (
-        <>
-        <div  className='user-cont'>
+        <div key={user.id} className='user-cont'>
         <Avatar
         sx={{ bgcolor: deepOrange[500] , borderStyle:'groove' , borderColor:'lightgray'}}
         alt={user.name}
-        src="/broken-image.jpg" 
+        src={user?.imgUrl}
         key={user?.id}
-        style={{width:'10vh', height:'10vh',fontSize:'1rem',textAlign:'center'}}
+        style={{width:'10vh', height:'10vh',fontSize:'1rem', margin:'1vh',textAlign:'center'}}
       >
         <img src={user?.imgUrl} alt={user.name} />
       </Avatar>
       <p>{user.name.split(" ")[0]}</p>
       </div>
-      </>
       ))}
       
      

@@ -18,6 +18,7 @@ import {bindActionCreators} from "redux";
 import {updateMealAction} from "../Redux/action-creators/mealActionCreator";
 import AddToMeal from "./Edit-Meal/AddToMeal";
 import EditMeal from "./Edit-Meal/EditMeal";
+import MyFamilyPage from "./My-Family/MyFamilyPage";
 
 export default function HomePage(){
 
@@ -26,6 +27,7 @@ export default function HomePage(){
      * (1) For Home Screen
      * (2) For Add A recipe To A Meal
      * (3) For Edit Meal Entirely
+     * (4) For FamilySpace
      */
     const [displaySelection,setDisplaySelection] =useState<number>(1);
 
@@ -53,15 +55,27 @@ export default function HomePage(){
       setDisplaySelection(2);
       updateMealFunc(meal);
   }
+
+    /**
+     * This method handles the click on the edit button , it sets the display value to the editMeal
+     * @param meal the selected meal by the user in the home component, for  passing down as a prop to edit meal
+     */
     function handleClickOnEditButton(meal:Meal){
         setDisplaySelection(3);
         updateMealFunc(meal);
     }
 
+    /**
+     * this functions sets the displayValue to the familySpace , the click in on the whole  div
+     */
+    function moveToFamilySpace() {
+        setDisplaySelection(4);
+    }
+
     return (
         <>
         {(displaySelection===1) ? ( <>
-            <div className="familiy-list-cont">
+            <div className="familiy-list-cont" onClick={()=> moveToFamilySpace()}>
                 <FamilyAvatarsList/>
             </div>
             <div className="car-cont">
@@ -75,17 +89,17 @@ export default function HomePage(){
 
                 {family.dayList?.map(day => (
 
-                    <div key={day.id} className="day-cont">
+                    <div key={day.id+10} className="day-cont">
                         <h5 className="day-of-week-title" >{day.dayOfWeek}</h5>
                         {day.mealList.map((meal) => (
                             <>
-                                <div key={meal.id} className="meal-cont">
+                                <div key={meal.id-100} className="meal-cont">
                                     <div>
                                         <h5 className="meal-time-head">{meal.mealTime}</h5>
                                     </div>
                                     <div className="recipes-cont">
                                         {meal.recipeList.map((recipe) => (
-                                            <div key={recipe.id} className="recipe-card">
+                                            <div key={recipe.id+100} className="recipe-card">
                                                 <div className="img-cont">
                                                     <img src={recipe.imgUrl} alt={recipe.name} />
                                                 </div>
@@ -118,6 +132,7 @@ export default function HomePage(){
         </>) :null}
         {(displaySelection===2) ? (<AddToMeal recipes={family.favoriteRecipes}/>) :null}
         {(displaySelection===3) ? (<EditMeal recipes={family.favoriteRecipes}  />) :null}
+        {(displaySelection===4) ? (<MyFamilyPage family={family}   />) :null}
 
         </>
 

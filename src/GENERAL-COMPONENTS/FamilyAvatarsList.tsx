@@ -14,7 +14,7 @@ export default function FamilyAvatarsList() {
     <>
    
     <div className='avatar-cont'>
-    <Stack direction="row"   spacing={1}>
+    <Stack direction="row"    spacing={2}>
 
       {family?.familyMembers?.map((user)=> (
         <div key={user.id} className='user-cont'>

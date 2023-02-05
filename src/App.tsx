@@ -11,9 +11,11 @@ import AddNewRecipe from './PAGES/Family-Recipe/New-Recipe/NewRecipePage'
 import CartPage from './PAGES/Cart/CartPage'
 import ChooseIngredients from './PAGES/Family-Recipe/ChooseIngredient';
 import {Meal} from "./MODELS/Meal";
+import {Cart} from "./MODELS/Cart";
 
 function App() {
     const defaultFamily: Family = {
+        cart: new Cart(),
         dayList: [], email: "", familyMembers: [], imgUrl: "", isActive: false, name: "", password: "",
         id: 0,
         favoriteRecipes: []
@@ -55,9 +57,8 @@ function App() {
 
                         <Route path='/my-family-recipes' element={<MyFamilyRecipes/>}/>
                         <Route path='/new-recipe' element={<AddNewRecipe/>}/>
-                        <Route path='/cart' element={<CartPage/>}/>
                         <Route path='/add-ingredients' element={<ChooseIngredients/>}/>
-                        {/*<Route path='/edit-ingredients' element={<EditIngredients/>}/>*/}
+                        <Route path='/cart' element={<CartPage family={family}/>}/>
 
 
                     </Routes>

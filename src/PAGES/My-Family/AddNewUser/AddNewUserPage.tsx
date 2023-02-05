@@ -1,14 +1,19 @@
-import react, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import './AddNewUserStyles.css'
 import {Family} from "../../../MODELS/Family";
 import {useForm} from "react-hook-form";
 import {User} from "../../../MODELS/User";
 import {addFamilyMember} from "../../../SERVICES/FamilyService";
+import {FamilyRole} from "../../../MODELS/ENUMS/FamilyRole";
 
 interface AddNewUserProps {
     family: Family;
 }
 
+/**
+ * An interface needed to display the cart avatar image and the selected attribute
+ *
+ */
 interface AvatarImage {
     img: string,
     isSelected: boolean
@@ -85,6 +90,7 @@ export default function AddNewUser(props: AddNewUserProps) {
     const onSubmit = (data: User) => {
         data.imgUrl = selectedAvatar;
         const tempUser: User = {
+            familyRole: FamilyRole.regular,
             favoriteRecipes: [],
             id: 0,
             imgUrl: selectedAvatar,

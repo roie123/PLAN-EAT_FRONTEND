@@ -1,5 +1,4 @@
-import react, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {useState} from 'react';
 import './MyFamilyStyles.css'
 import {Family} from "../../MODELS/Family";
 import EditIcon from '@mui/icons-material/Edit';
@@ -9,6 +8,8 @@ import AddNewUser from "./AddNewUser/AddNewUserPage";
 import EditUser from "./EditUser";
 import {User} from "../../MODELS/User";
 import {deleteUser} from "../../SERVICES/UserService";
+import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
+
 interface MyFamilyPageProps {
     family: Family
 }
@@ -23,6 +24,7 @@ export default function MyFamilyPage(props: MyFamilyPageProps) {
      */
     const [dispalySelection, setdispalySelection] = useState<number>(1);
 const emptyUser:User={
+    familyRole: FamilyRole.regular,
     favoriteRecipes: [], id: 0, imgUrl: "", isActive: false, name: ""
 
 }

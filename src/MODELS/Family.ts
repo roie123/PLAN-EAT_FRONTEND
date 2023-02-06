@@ -1,6 +1,7 @@
 import { Day } from "./Day";
 import Recipe from "./Recipe";
 import { User } from "./User";
+import {Cart} from "./Cart";
 
 export interface Family{
     id:number,
@@ -11,7 +12,8 @@ export interface Family{
     favoriteRecipes :Recipe[],
     email ?:string,
     password?:string
-    imgUrl?:string
+    imgUrl?:string,
+    cart:Cart
 
 }
 

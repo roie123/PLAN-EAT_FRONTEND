@@ -1,37 +1,41 @@
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useState} from "react";
 import FamilyAvatarsList from "../GENERAL-COMPONENTS/FamilyAvatarsList";
 // import RecipeCar from "../GENERAL-COMPONENTS/RecipeCar"
-import { Family } from "../MODELS/Family";
-import Recipe from "../MODELS/Recipe";
-import { FamilyContext } from "../Provider/FamilyProvider";
-import { getFamily } from "../SERVICES/FamilyService";
+import {FamilyContext} from "../Provider/FamilyProvider";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
 import './Home.css'
 import {Meal} from "../MODELS/Meal";
-import {EditMealContext} from "../Provider/EditMealProvider";
-import {useDispatch, useSelector} from "react-redux";
-import {State} from "../Redux/reducers";
+import {useDispatch} from "react-redux";
 import {bindActionCreators} from "redux";
 import {updateMealAction} from "../Redux/action-creators/mealActionCreator";
 import AddToMeal from "./Edit-Meal/AddToMeal";
 import EditMeal from "./Edit-Meal/EditMeal";
 import MyFamilyPage from "./My-Family/MyFamilyPage";
+import EntryPage from "./Entry/EntryPage";
+import {LocalStorgeKeyName} from "../MODELS/ENUMS/LocalStorgeKeyName";
+import {User} from "../MODELS/User";
+import {FamilyRole} from "../MODELS/ENUMS/FamilyRole";
+import CartPage from "./Cart/CartPage";
 
 export default function HomePage(){
 
     /**\
      * This Hook is for selecting the desired component
+     * (0) For Entry Screen
      * (1) For Home Screen
      * (2) For Add A recipe To A Meal
      * (3) For Edit Meal Entirely
      * (4) For FamilySpace
      */
-    const [displaySelection,setDisplaySelection] =useState<number>(1);
+    const [displaySelection,setDisplaySelection] =useState<number>(0);
 
+    const defaultUser:User={
+        familyRole: FamilyRole.regular, favoriteRecipes: [], id: 0, imgUrl: "", isActive: false, name: ""
 
+    }
+    const [currentUser,setcurrentUser] =useState<User>();
+    
     /**\
      * Those Method Are For Updating the Selected Meal using a Redux store
      */
@@ -40,13 +44,24 @@ export default function HomePage(){
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
     /**\
      * This si the section for the family API
      */
     const family = useContext(FamilyContext);
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+    /**
+     * This section checks if the local storage has a selected user's name AND if the display is the Entry Screen
+     * if those conditions are true it sets the display to the Home  Screen and updates the current user
+     */
+    if (localStorage.getItem(LocalStorgeKeyName.selectedUserName)!==null && displaySelection===0){
+        family.familyMembers.forEach((user)=> {
+            if (localStorage.getItem(LocalStorgeKeyName.selectedUserName)===user.name){
+                setcurrentUser(user);
+            }
+        })
+        setDisplaySelection(1);
+    }
     /**
      * This Section is for the Add Recipe To Meal Feature
      * @param meal the meal the user Selected and will pass to the EditMealComponent
@@ -74,12 +89,14 @@ export default function HomePage(){
 
     return (
         <>
+        {(displaySelection===0) ? (<EntryPage users={family.familyMembers}   />) :null}
         {(displaySelection===1) ? ( <>
             <div className="familiy-list-cont" onClick={()=> moveToFamilySpace()}>
                 <FamilyAvatarsList/>
             </div>
             <div className="car-cont">
                 <h1>WELCOME </h1>
+                <p>{currentUser?.name}</p>
                 {family?.name} Family
             </div>
 

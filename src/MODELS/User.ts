@@ -1,11 +1,13 @@
 import Recipe from "./Recipe";
+import {FamilyRole} from "./ENUMS/FamilyRole";
 
 export interface User{
 id :number ,
 isActive:boolean,
 name:string,
 favoriteRecipes:Recipe[],
-imgUrl?:string
+imgUrl?:string,
+    familyRole:FamilyRole;
 }
 
 /**

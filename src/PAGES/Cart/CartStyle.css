@@ -17,17 +17,28 @@
     width: 100%;
     gap: 1vh;
     padding: 1vh;
+    height: 60vh;
+    overflow-y: scroll;
+    box-shadow: rgb(44, 62, 80) 0px 0px 15px 0px inset;
+    border-style: solid;
+    border-color: #807a7a;
 }
 
 .item-card {
     display: flex;
+    flex-direction: column;
     width: 100%;
     padding: 1vh;
     border-radius: 3px;
-    background-color: #c6bcbc;
+    background-color: #decec0;
     gap: 0.5vh;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    height: min-content;
 }
-
+.upper-cont{
+        display: flex;
+    flex-direction: row;
+}
 .item-img-cont {
     height: 6vh;
     width: 6vh;
@@ -46,9 +57,14 @@
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    padding: 0.2vh;
 }
 .item-desc p{
     text-transform: capitalize;
+    opacity: 0.9;
+    width: 50%;
+    overflow-x: hidden;
+    padding-left: 1vh;
 }
 .item-buttons{
     width: 10vh;
@@ -57,4 +73,81 @@
     align-items: center;
     gap: 1vh;
     font-weight: bolder;
+}
+.lower-cont{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5vh;
+}
+.lower-cont p{
+    opacity: 0.6;
+    width: 33%;
+    text-align: center;
+}
+.restock-cont{
+    margin-top: 2vh;
+    width: 100%;
+    height: 8vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1vh;
+}
+.week-number{
+    width: 30vh;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    gap: 1vh;
+    text-align: center;
+
+}
+.restock-butt-cont{
+display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+.restock-button{
+    background-color: transparent;
+    background-image: linear-gradient(to bottom, #fff, #f8eedb);
+    border: 0 solid #e5e7eb;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    color: #482307;
+    column-gap: 1rem;
+    cursor: pointer;
+    display: flex;
+    font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 100%;
+    font-weight: 700;
+    line-height: 24px;
+    margin: 0;
+    outline: 2px solid transparent;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    text-transform: none;
+    transition: all .1s cubic-bezier(.4, 0, .2, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    box-shadow: -6px 8px 10px rgba(81,41,10,0.1),0px 2px 2px rgba(81,41,10,0.2);
+}
+
+.restock-button:active {
+    background-color: #f3f4f6;
+    box-shadow: -1px 2px 5px rgba(81,41,10,0.15),0px 1px 1px rgba(81,41,10,0.15);
+    transform: translateY(0.125rem);
+}
+
+.restock-button:focus {
+    box-shadow: rgba(72, 35, 7, .46) 0 0 0 4px, -6px 8px 10px rgba(81,41,10,0.1), 0px 2px 2px rgba(81,41,10,0.2);
+}
+
+
+.restock-error{
+    color: red;
 }

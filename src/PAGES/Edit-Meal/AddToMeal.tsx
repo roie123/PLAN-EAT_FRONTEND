@@ -38,7 +38,7 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
      * @param recipe
      */
     function handleClickOnImage(recipe: Recipe) {
-        recipe.id = 0;
+        // recipe.id = 0;
         setselectedRecipes((prevState) => [...prevState, recipe]);
 
     }
@@ -55,7 +55,7 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
      * @param recipe the recipe to remove
      */
     function handleClickOnImageToRemove(recipe: Recipe) {
-        recipe.id = 0;
+        // recipe.id = 0;
         setselectedRecipes((recipes) => (selectedRecipes.filter((recipeFromArray) => recipeFromArray.name !== recipe.name)));
 
     }

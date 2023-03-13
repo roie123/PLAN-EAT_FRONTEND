@@ -12,6 +12,7 @@ import IngredientCard from "../../GENERAL-COMPONENTS/IngredientComponents/Ingred
 import Recipe from "../../MODELS/Recipe";
 import {createRecipe} from "../../SERVICES/RecipeService";
 import {NewRecipeValuesContext} from "../../SERVICES/NewRecipeContext";
+import {FamilyContext} from "../../Provider/FamilyProvider";
 
 
 export default function ChooseIngredients() {
@@ -23,7 +24,8 @@ export default function ChooseIngredients() {
     }
     const recipe: Recipe = useContext(NewRecipeValuesContext);
     const [recipeFromParent, setRecipeFromParent] = useState<Recipe>(recipe);
-
+    let familyId: number = useContext(FamilyContext).id
+console.log(familyId);
     useEffect(() => {
         setRecipeFromParent(recipe)
         console.log(recipe)
@@ -63,11 +65,10 @@ export default function ChooseIngredients() {
     }, [searchQuery]);
 
     function sendUserToDB() {
-        let familyId: number = Number(localStorage.getItem("familyId"));
         recipeFromParent.ingredients = selectedIngredients;
         console.log(recipeFromParent);
         createRecipe(recipeFromParent, familyId);
-        // window.location.href = '/my-family-recipes';
+        window.location.href = '/my-family-recipes';
     }
 
 

@@ -8,7 +8,30 @@
 }
 
 .title-cont {
+}
 
+.loading-loop-cont {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.loading-loop {
+    animation-name: loading-loop-ani;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-duration: 1s;
+}
+
+@keyframes loading-loop-ani {
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(-360deg)
+    }
 }
 
 .item-card-cont {
@@ -24,6 +47,68 @@
     border-color: #807a7a;
 }
 
+.no-items-cont {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 15vh;
+    padding: 3vh;
+}
+
+.no-items-cont p {
+    color: #c85000;
+}
+.no-items-lower{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.no-items-cont button {
+ margin: 10px;
+    padding: 15px 30px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    border-radius: 10px;
+    display: block;
+    border: 0px;
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: 0px 0px 14px -7px #f09819;
+    background-image: linear-gradient(45deg, #FF512F 0%, #F09819 51%, #FF512F 100%);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    height: 10vh;
+    width: 80%;
+
+}
+
+.no-items-cont button:hover {
+    background-position: right center;
+    /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
+
+.no-items-cont button:active {
+    transform: scale(0.95);
+}
+
+
+#desc-line {
+    color: black;
+    opacity: 0.6;
+}
+
 .item-card {
     display: flex;
     flex-direction: column;
@@ -35,10 +120,12 @@
     box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
     height: min-content;
 }
-.upper-cont{
-        display: flex;
+
+.upper-cont {
+    display: flex;
     flex-direction: row;
 }
+
 .item-img-cont {
     height: 6vh;
     width: 6vh;
@@ -59,14 +146,16 @@
     justify-content: space-between;
     padding: 0.2vh;
 }
-.item-desc p{
+
+.item-desc p {
     text-transform: capitalize;
     opacity: 0.9;
     width: 50%;
     overflow-x: hidden;
     padding-left: 1vh;
 }
-.item-buttons{
+
+.item-buttons {
     width: 10vh;
     display: flex;
     justify-content: space-around;
@@ -74,19 +163,34 @@
     gap: 1vh;
     font-weight: bolder;
 }
-.lower-cont{
+
+.lower-cont {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding: 0.5vh;
 }
-.lower-cont p{
+
+.lower-cont p {
     opacity: 0.6;
     width: 33%;
     text-align: center;
 }
-.restock-cont{
+.cart-action-cont{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+}
+.cart-action-cont .restock-button{
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content:center ;
+    border-style: solid;
+}
+.restock-cont {
     margin-top: 2vh;
     width: 100%;
     height: 8vh;
@@ -96,7 +200,8 @@
     align-items: center;
     padding: 1vh;
 }
-.week-number{
+
+.week-number {
     width: 30vh;
     display: flex;
     flex-direction: column;
@@ -105,13 +210,15 @@
     text-align: center;
 
 }
-.restock-butt-cont{
-display: flex;
+
+.restock-butt-cont {
+    display: flex;
     flex-direction: row;
     justify-content: space-around;
 
 }
-.restock-button{
+
+.restock-button {
     background-color: transparent;
     background-image: linear-gradient(to bottom, #fff, #f8eedb);
     border: 0 solid #e5e7eb;
@@ -121,7 +228,7 @@ display: flex;
     column-gap: 1rem;
     cursor: pointer;
     display: flex;
-    font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-family: ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 100%;
     font-weight: 700;
     line-height: 24px;
@@ -134,20 +241,19 @@ display: flex;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    box-shadow: -6px 8px 10px rgba(81,41,10,0.1),0px 2px 2px rgba(81,41,10,0.2);
+    box-shadow: -6px 8px 10px rgba(81, 41, 10, 0.1), 0px 2px 2px rgba(81, 41, 10, 0.2);
 }
 
 .restock-button:active {
     background-color: #f3f4f6;
-    box-shadow: -1px 2px 5px rgba(81,41,10,0.15),0px 1px 1px rgba(81,41,10,0.15);
+    box-shadow: -1px 2px 5px rgba(81, 41, 10, 0.15), 0px 1px 1px rgba(81, 41, 10, 0.15);
     transform: translateY(0.125rem);
 }
 
 .restock-button:focus {
-    box-shadow: rgba(72, 35, 7, .46) 0 0 0 4px, -6px 8px 10px rgba(81,41,10,0.1), 0px 2px 2px rgba(81,41,10,0.2);
 }
 
 
-.restock-error{
+.restock-error {
     color: red;
 }

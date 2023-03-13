@@ -2,11 +2,13 @@ import react from 'react';
 import {combineReducers} from "redux";
 import bankReducer  from "./bankReducer";
 import {mealReducer} from "./mealReducer";
+import {familyReducer} from "./FamilyReducer";
 
 
 const reducers = combineReducers({
     bank : bankReducer,
-    meal: mealReducer
+    meal: mealReducer,
+    family:familyReducer
 });
 
 

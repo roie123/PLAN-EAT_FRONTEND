@@ -62,8 +62,8 @@ function ResponsiveAppBar() {
     <AppBar position="sticky">
       <Container maxWidth="xl" > 
         <Toolbar disableGutters>
-          <Diversity1Icon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
+
+            <Typography
             variant="h6"
             noWrap
             component="a"
@@ -78,7 +78,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -120,7 +120,12 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <Diversity1Icon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                <Diversity1Icon  onClick={() => window.location.replace('')} sx={{ cursor:'pointer', display: { xs: 'flex', md: 'none' }, mr: 1, fontSize:'2.6rem' }}  >
+                </Diversity1Icon>
+
+
+
+
           <Typography
             variant="h5"
             noWrap
@@ -137,7 +142,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (

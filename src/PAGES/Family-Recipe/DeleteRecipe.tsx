@@ -21,7 +21,6 @@ const defaultRecipe:Recipe={
 
     function handleChange(recipe:Recipe){
    
-        console.log(recipe)
           setSelectedRecipe((...prev) => recipe);
           
       }

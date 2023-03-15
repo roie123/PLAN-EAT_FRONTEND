@@ -29,7 +29,6 @@ const [componentSelector, setComponentSelector] = useState<number>(1); // 1 for 
 const[hideRecipes,setHideRecipes] = useState<boolean>(false);//false for default 
 function handleChange(recipe:Recipe){
 
-  console.log(recipe)
     setSelectedRecipe((...prev) => recipe);
     
 }

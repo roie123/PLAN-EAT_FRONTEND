@@ -108,7 +108,6 @@ export default function EditMeal(props: EditMealProps) {
     function sendMealToDB() {
         selectedMealFromHome.numberOfEaters = numberOfEaters;
         selectedMealFromHome.mealTime = mealTime;
-        console.log(selectedMealFromHome);
         updateMeal(selectedMealFromHome.id, selectedMealFromHome);
         window.location.href = '/'
     }

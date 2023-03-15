@@ -46,7 +46,6 @@ export default function EditRecipeWindow(editRecipeWindowProps:EditRecipeWindowP
         formValues.imgUrl= selectedImg;
         formValues.id = selectedRecipe.id;
         setSelectedRecipe(formValues);
-        console.log(selectedRecipe.id);
 
     }
 

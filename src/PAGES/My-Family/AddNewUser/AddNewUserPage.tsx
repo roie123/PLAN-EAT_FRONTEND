@@ -98,7 +98,6 @@ export default function AddNewUser(props: AddNewUserProps) {
             name: data.name
 
         }
-        console.log(tempUser);
         addFamilyMember(tempUser, props.family.id);
         window.location.href='/';
 

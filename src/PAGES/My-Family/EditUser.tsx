@@ -74,7 +74,6 @@ const defaultAvatarImg = (props.selectedUser.imgUrl!==undefined) ? props.selecte
      */
     function handleClickOnAvatarImg(avatar: AvatarImage) {
         setselectedAvatar((prev) => avatar.img);
-        console.log(avatar.img);
         const temp: AvatarImage[] = [...avatarsImg];
         temp.forEach((avatarObject) => {
             avatarObject.isSelected = false;
@@ -102,7 +101,6 @@ const defaultAvatarImg = (props.selectedUser.imgUrl!==undefined) ? props.selecte
         props.selectedUser.name=data.name;
         // props.selectedUser.imgUrl=selectedAvatar;
         updateUser(props.selectedUser, props.selectedUser.id);
-        console.log(props.selectedUser);
         window.location.href='/';
 
 

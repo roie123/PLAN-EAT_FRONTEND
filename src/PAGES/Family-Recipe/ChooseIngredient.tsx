@@ -25,14 +25,13 @@ export default function ChooseIngredients() {
     const recipe: Recipe = useContext(NewRecipeValuesContext);
     const [recipeFromParent, setRecipeFromParent] = useState<Recipe>(recipe);
     let familyId: number = useContext(FamilyContext).id
-console.log(familyId);
     useEffect(() => {
         setRecipeFromParent(recipe)
-        console.log(recipe)
     }, [recipe])
 
     useEffect(() => {
-        console.log(recipeFromParent)
+
+
     }, [recipeFromParent])
 
     //THE SELECTED INGREDIENTS TO MOVE TO CHOOSE INGREDIENT
@@ -53,20 +52,21 @@ console.log(familyId);
 
     const handleAddingIngredient = (ingredient: Ingredient, finished: boolean) => {
         setSelectedIngredients([...selectedIngredients, ingredient])
-        console.log(selectedIngredients)
     }
 
 
     useEffect(() => {
         (async () => {
-            const allIngredientsBySearch = await getAllIngredientsBySearch(searchQuery);
-            setIngredients(allIngredientsBySearch);
+            if (searchQuery.length>2){
+                const allIngredientsBySearch = await getAllIngredientsBySearch(searchQuery);
+                setIngredients(allIngredientsBySearch);
+            }
+
         })();
     }, [searchQuery]);
 
     function sendUserToDB() {
         recipeFromParent.ingredients = selectedIngredients;
-        console.log(recipeFromParent);
         createRecipe(recipeFromParent, familyId);
         window.location.href = '/my-family-recipes';
     }
@@ -98,7 +98,7 @@ console.log(familyId);
             <div className="search-wrapper">
                 <div className="search-container">
                     <form onChange={handleFormEvent}>
-                        <input type="text" {...register("value")} className="search-input" placeholder="Search"/>
+                        <input type="text" required={true} {...register("value")} className="search-input" placeholder="Search"/>
 
                     </form>
 
@@ -114,7 +114,6 @@ console.log(familyId);
 
             {ingredients.map((ing) => (<><IngredientCard ingredient={ing}
                                                          onClick={() => handleAddingIngredient(ing, userIsFinished)}/></>))}
-            <IngredientTypeList/>
 
         </>
 

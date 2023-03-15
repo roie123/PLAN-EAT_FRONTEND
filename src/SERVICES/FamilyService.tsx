@@ -1,14 +1,10 @@
-import { DEFAULT_ENCODING } from 'crypto';
-import react, { createContext, useEffect, useState } from 'react';
 import axios from 'axios'
-import Recipe from '../MODELS/Recipe';
-import { Family } from '../MODELS/Family';
-import { setConstantValue } from 'typescript';
+import {Family} from '../MODELS/Family';
 import {User} from "../MODELS/User";
-import {useDispatch} from "react-redux";
 import store from "../Redux/store";
 import {Cart} from "../MODELS/Cart";
-
+import {familyReducer} from "../Redux/reducers/FamilyReducer";
+import {FamilyActionTypes} from "../Redux/reducers/actionTypes/FamilyActionTypes";
 
 
 const baseURL = 'http://localhost:8080/api/family';
@@ -30,6 +26,7 @@ export const addFamilyMember = async (user: User,familyId : number): Promise<Use
 export const getFamily = async (): Promise<Family> => {
     try {
         const response = await axios.get(baseURL+'/id/1');
+        store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload:response.data});
         return response.data;
     } catch (error) {
         throw error;

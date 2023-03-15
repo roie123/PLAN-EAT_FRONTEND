@@ -33,7 +33,6 @@ function App() {
             try {
                 const family = await getFamily();
                 setFamily(family);
-                console.log(family);
                 setLoading(false);
             } catch (error: any) {
                 setError(error);

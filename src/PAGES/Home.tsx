@@ -50,6 +50,7 @@ export default function HomePage(){
     const family = useContext(FamilyContext);
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+
     /**
      * This section checks if the local storage has a selected user's name AND if the display is the Entry Screen
      * if those conditions are true it sets the display to the Home  Screen and updates the current user

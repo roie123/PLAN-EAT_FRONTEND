@@ -20,7 +20,6 @@ export const getAllActiveIngredients = async() : Promise<Ingredient[]> => {
 }
 export const getAllIngredientsBySearch = async(searchPattern:string) : Promise<Ingredient[]> => {
     try{
-        console.log(`${apiUrl}/filter/${searchPattern}`)
         const response = await axios.get(`${apiUrl}/filter/${searchPattern}`);
         return response.data;
     

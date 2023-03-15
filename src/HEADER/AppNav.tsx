@@ -120,8 +120,9 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-                <Diversity1Icon  onClick={() => window.location.replace('')} sx={{ cursor:'pointer', display: { xs: 'flex', md: 'none' }, mr: 1, fontSize:'2.6rem' }}  >
+                <Diversity1Icon    onClick={() => window.location.replace('http://localhost:3000/')}   sx={{ cursor:'pointer', display: { xs: 'flex', md: 'none' }, mr: 1, fontSize:'2.6rem' }}  >
                 </Diversity1Icon>
+
 
 
 

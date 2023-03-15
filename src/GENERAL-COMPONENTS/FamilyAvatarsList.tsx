@@ -14,9 +14,27 @@ export default function FamilyAvatarsList() {
     <>
    
     <div className='avatar-cont'>
-    <Stack direction="row"    spacing={2}>
+    <Stack direction="row" sx={{
+      display:'flex',
+      flexDirection:'row',
+      alignItems:'center',
+      justifyItems:'center'
+    }}   spacing={2}>
 
-      {family?.familyMembers?.map((user)=> (
+      {family.familyMembers.length===0 ?
+          <Avatar
+              sx={{ borderStyle:'groove' , borderColor:'lightgray'}}
+              src={'https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg'}
+              key={99999}
+              style={{width:'10vh', height:'10vh',fontSize:'1rem', margin:'1vh',textAlign:'center'}}
+          >
+            <img src={'https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg'} />
+          </Avatar>
+
+
+
+          :
+        family?.familyMembers?.map((user)=> (
         <div key={user.id} className='user-cont'>
         <Avatar
         sx={{ bgcolor: deepOrange[500] , borderStyle:'groove' , borderColor:'lightgray'}}

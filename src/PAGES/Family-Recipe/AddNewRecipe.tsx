@@ -73,14 +73,10 @@ export default function AddNewRecipe(recipe: AddNewRecipeProp) {
             estimatedPrice: 0, id: 0, imgUrl: selectedImg, ingredients: [], name: values.name
 
         }
-        console.log("++++++++");
-        console.log(recipeToDeliver);
-        console.log("+++++++");
+
         const child = document.getElementById('choose-ingredients-comp');
         setDefaultRecipe(recipeToDeliver);
-        console.log("---dfsdf---");
-        console.log(defaultRecipe);
-        console.log("---fsdds---");
+
         await setdisplaySelection(2);
         // @ts-ignore
         child.scrollIntoView({behavior: 'smooth'})

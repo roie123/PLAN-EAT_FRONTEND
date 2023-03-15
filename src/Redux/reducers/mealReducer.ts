@@ -22,8 +22,7 @@ export const mealReducer = (state= initialValueOfMeal , action:MealAction )=>{
     switch (action.type){
         case MealActionType.UPDATE:{
             state=action.payload;
-            console.log("meal updated");
-            console.log(state);
+
             return state;
         }
 

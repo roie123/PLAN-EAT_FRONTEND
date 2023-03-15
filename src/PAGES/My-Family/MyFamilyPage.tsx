@@ -9,6 +9,8 @@ import EditUser from "./EditUser";
 import {User} from "../../MODELS/User";
 import {deleteUser} from "../../SERVICES/UserService";
 import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
+import Dialog from "@mui/material/Dialog";
+import {Button, Typography} from "@mui/material";
 
 interface MyFamilyPageProps {
     family: Family
@@ -33,7 +35,8 @@ const emptyUser:User={
      */
     const [selectedUser,setselectedUser] =useState<User>(emptyUser);
 
-
+    const [userToBeDeleted,setuserToBeDeleted] =useState<User>();
+    
     function handleAddUserButton() {
         setdispalySelection(2);
     }
@@ -43,13 +46,28 @@ const emptyUser:User={
         setdispalySelection(3);
     }
 
+    
+    const [popUpSelection,setpopUpSelection] =useState<number>(0);
+    
     /**
      * This function deletes the user
      * @param user the user to be deleted
      */
-    function handleDeleteButton(user:User){
-        deleteUser(user.id);
+   async function handleDeleteButton(user:User){
+        setuserToBeDeleted(user);
+            setpopUpSelection(1);
+
+    }
+async function deleteUserEnd() {
+
+    await    deleteUser(userToBeDeleted?.id as number);
+    let index = props.family.familyMembers.indexOf(userToBeDeleted as User);
+    props.family.familyMembers.splice(index,1);
+    setpopUpSelection(0);
+    return;
 }
+
+
     return (
         <>
             {(dispalySelection === 1) ? <>
@@ -76,6 +94,9 @@ const emptyUser:User={
                                 </div>
                             </div>
                         </div>
+
+
+
                     ))}
 
 
@@ -90,7 +111,15 @@ const emptyUser:User={
             {(dispalySelection === 2) ? (<AddNewUser family={props.family}/>) : null}
             {(dispalySelection === 3) ? (<EditUser family={props.family} selectedUser={selectedUser}/>) : null}
 
+            <Dialog open={popUpSelection===1}>
+                    <Typography>
+                        Are you Sure You Want To Delete This User ?
 
+                    </Typography>
+                    <Button onClick={()=>deleteUserEnd()}>Yes</Button>
+                    <Button onClick={()=>setpopUpSelection(0)} >No</Button>
+
+            </Dialog>
         </>
     )
 }

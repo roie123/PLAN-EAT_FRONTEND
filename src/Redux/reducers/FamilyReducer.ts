@@ -18,9 +18,8 @@ const dafaultFamily:Family={
 
 }
 
-export function familyReducer(currentState:Family = dafaultFamily , action:FamilyAction):Family{
+export function familyReducer(currentState:Family = dafaultFamily , action:FamilyAction){
     let newState:Family ={...currentState};
-    console.log(action);
     switch (action.type){
         case FamilyActionTypes.SET_FAMILY :{
             newState = action.payload

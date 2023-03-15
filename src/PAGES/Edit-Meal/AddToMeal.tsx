@@ -47,7 +47,6 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
      * This use Effect will track the selected Recipes
      */
     useEffect(() => {
-        console.log(selectedRecipes);
     }, [selectedRecipes])
 
     /**

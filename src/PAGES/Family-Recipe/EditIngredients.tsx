@@ -64,7 +64,6 @@ export default  function EditIngredients (props:EditIngredientsProps) {
     function sendRecipeToBeUpdated() {
         recipeFromParent.id = props.id;
         recipeFromParent.ingredients = selectedIngredients;
-        console.log(recipeFromParent);
         updateRecipe(recipeFromParent.id, recipeFromParent);
         window.location.href = '/my-family-recipes';
     }

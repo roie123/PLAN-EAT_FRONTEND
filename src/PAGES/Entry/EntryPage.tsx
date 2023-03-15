@@ -13,7 +13,7 @@ interface EntryPageProps{
 export default function EntryPage(props:EntryPageProps){
 
     const [users,setusers] =useState<User[]>([...props.users]);
-    useEffect(()=>{console.log(users);},[users])//for testing
+    useEffect(()=>{    },[users])//for testing
 
     function handleClickOnUser(user:User){
     localStorage.setItem(LocalStorgeKeyName.selectedUserName,user.name);

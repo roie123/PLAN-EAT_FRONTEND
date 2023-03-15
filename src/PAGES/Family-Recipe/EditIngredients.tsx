@@ -9,6 +9,7 @@ import IngredientCard from "../../GENERAL-COMPONENTS/IngredientComponents/Ingred
 import IngredientTypeList from "../../GENERAL-COMPONENTS/IngredientComponents/IngredientTypeList";
 import React from "react";
 import {EditRecipeContext} from "../../SERVICES/EditRecipeContext";
+import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
 
 interface EditIngredientsProps{
     id:number;
@@ -18,6 +19,14 @@ export default  function EditIngredients (props:EditIngredientsProps) {
 
 
     let defaultRecipe: Recipe = {
+        requestCreator: {
+            id :0 ,
+            isActive:true,
+            name:"",
+            favoriteRecipes:[],
+            imgUrl:"",
+            familyRole:FamilyRole.regular
+        },
         id: 0,
         name: "",
         estimatedPrice: 0,

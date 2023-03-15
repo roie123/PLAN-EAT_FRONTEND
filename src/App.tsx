@@ -20,10 +20,7 @@ function App() {
         id: 0,
         favoriteRecipes: []
     }
-    const defaultMeal: Meal = {
-        id: 0, isActive: false, mealTime: "", numberOfEaters: 0, recipeList: [], timeToMakeInMinutes: 0
 
-    }
     const [family, setFamily] = useState<Family>(defaultFamily);
     // const [family, setFamily] = useContext(FamilyContext);
     const [loading, setLoading] = useState(true);

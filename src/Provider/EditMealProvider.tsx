@@ -3,7 +3,8 @@ import {Meal} from "../MODELS/Meal";
 
 
 const defaultMeal:Meal={
-    id: 0, isActive: false, mealTime: "", numberOfEaters: 0, recipeList: [], timeToMakeInMinutes: 0
+    mealAddOnRequestDTOList: [],
+    id: 0, isActive: false, mealTime: "", numberOfEaters: 0, approvedRecipes: [], timeToMakeInMinutes: 0, pendingRecipes:[]
 
 }
 

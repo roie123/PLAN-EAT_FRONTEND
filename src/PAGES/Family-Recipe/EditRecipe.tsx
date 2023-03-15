@@ -8,6 +8,7 @@ import {EditRecipeContext} from "../../SERVICES/EditRecipeContext";
 import EditIngredients from "./EditIngredients";
 import ts from "typescript/lib/tsserverlibrary";
 import formatMessage = ts.server.formatMessage;
+import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
 
 
 
@@ -19,6 +20,14 @@ familyId:number
 
 export default function EditRecipeWindow(editRecipeWindowProps:EditRecipeWindowProps){
     const defaultRecipe :Recipe= {
+        requestCreator: {
+            id :0 ,
+            isActive:true,
+            name:"",
+            favoriteRecipes:[],
+            imgUrl:"",
+            familyRole:FamilyRole.regular
+        },
         id:-1,
         imgUrl:'',
         estimatedPrice:-1,

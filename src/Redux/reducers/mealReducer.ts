@@ -3,12 +3,14 @@ import {MealActionType} from "./actionTypes/MealActionType";
 
 
 const initialValueOfMeal:Meal = {
+    mealAddOnRequestDTOList: [],
     id: 0,
     isActive: false,
     mealTime: "",
     numberOfEaters: 0,
-    recipeList: [],
-    timeToMakeInMinutes: 10000
+    approvedRecipes: [],
+    timeToMakeInMinutes: 10000,
+    pendingRecipes:[]
 }
 
 

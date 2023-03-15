@@ -1,4 +1,5 @@
 import Recipe from "./Recipe";
+import {MealAddOnRequestDTO} from "./MealAddOnRequestDTO";
 
 export interface Meal{
 id:number,
@@ -6,8 +7,9 @@ timeToMakeInMinutes :number,
 numberOfEaters:number,
 isActive:boolean,
 mealTime:string,
-recipeList:Recipe[],
-
+approvedRecipes:Recipe[],
+    pendingRecipes : Recipe[],
+    mealAddOnRequestDTOList:MealAddOnRequestDTO[]
 }
 
 

@@ -1,18 +1,10 @@
-import {Button, MenuItem, Select, TextField} from '@mui/material';
-import react, {createContext, FormEvent, useEffect, useState} from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
+import React, {useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
 import Recipe from '../../MODELS/Recipe';
-import {createRecipe} from '../../SERVICES/RecipeService';
-import AddCircleIcon from '@mui/icons-material/AddCircleOutline';
 import {Ingredient} from '../../MODELS/Ingredient';
-import MoneyIcon from '@mui/icons-material/AttachMoney';
-import {IngredientType} from '../../MODELS/ENUMS/IngredientType';
-import {Link, Route, Routes} from 'react-router-dom';
 import ChooseIngredients from './ChooseIngredient';
 import {NewRecipeValuesContext} from '../../SERVICES/NewRecipeContext';
-import Test from './Test';
-import {json} from 'stream/consumers';
-import React from "react";
+import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
 
 interface AddNewRecipeProp {
     selectedRecipe: Recipe;
@@ -38,6 +30,14 @@ export default function AddNewRecipe(recipe: AddNewRecipeProp) {
     //
     // }
     const [defaultRecipe, setDefaultRecipe] = useState<Recipe>({
+        requestCreator: {
+            id :0 ,
+            isActive:true,
+            name:"",
+            favoriteRecipes:[],
+            imgUrl:"",
+            familyRole:FamilyRole.regular
+        },
         id: 0,
         imgUrl: 'NO',
         estimatedPrice: 0,
@@ -69,6 +69,14 @@ export default function AddNewRecipe(recipe: AddNewRecipeProp) {
     async function scrollToChild(values: Recipe) {
 
         const recipeToDeliver: Recipe = {
+            requestCreator: {
+                id :0 ,
+                isActive:true,
+                name:"",
+                favoriteRecipes:[],
+                imgUrl:"",
+                familyRole:FamilyRole.regular
+            },
             timeToMake: 0,
             estimatedPrice: 0, id: 0, imgUrl: selectedImg, ingredients: [], name: values.name
 

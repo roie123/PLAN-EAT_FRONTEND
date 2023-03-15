@@ -13,10 +13,19 @@ import Recipe from "../../MODELS/Recipe";
 import {createRecipe} from "../../SERVICES/RecipeService";
 import {NewRecipeValuesContext} from "../../SERVICES/NewRecipeContext";
 import {FamilyContext} from "../../Provider/FamilyProvider";
+import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
 
 
 export default function ChooseIngredients() {
     let defaultRecipe: Recipe = {
+        requestCreator: {
+            id :0 ,
+            isActive:true,
+            name:"",
+            favoriteRecipes:[],
+            imgUrl:"",
+            familyRole:FamilyRole.regular
+        },
         id: 0,
         name: "",
         estimatedPrice: 0,

@@ -13,3 +13,12 @@ export const updateMeal = async (id: number, meal:Meal): Promise<Recipe> => {
         throw error;
     }
 };
+
+export const addPendingRecipes = async (mealId: number,userId:number, recipes:Recipe[]): Promise<Recipe> => {
+    try {
+        const response = await axios.put(`${baseURL}/addPendingRecipes/${mealId}/${userId}`, recipes);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

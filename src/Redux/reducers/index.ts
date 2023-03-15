@@ -3,12 +3,14 @@ import {combineReducers} from "redux";
 import bankReducer  from "./bankReducer";
 import {mealReducer} from "./mealReducer";
 import {familyReducer} from "./FamilyReducer";
+import {currentUserReducer} from "./CurrentUserReducer";
 
 
 const reducers = combineReducers({
     bank : bankReducer,
     meal: mealReducer,
-    family:familyReducer
+    family:familyReducer,
+    currentUser:currentUserReducer
 });
 
 

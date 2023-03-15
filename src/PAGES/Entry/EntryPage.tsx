@@ -3,6 +3,8 @@ import './EntryPageStyle.css'
 import {Family} from "../../MODELS/Family";
 import {User} from "../../MODELS/User";
 import {LocalStorgeKeyName} from "../../MODELS/ENUMS/LocalStorgeKeyName";
+import store from "../../Redux/store";
+import {CurrentUserActionType} from "../../Redux/reducers/actionTypes/CurrentUserActionType";
 
 
 interface EntryPageProps{
@@ -18,7 +20,11 @@ export default function EntryPage(props:EntryPageProps){
     function handleClickOnUser(user:User){
     localStorage.setItem(LocalStorgeKeyName.selectedUserName,user.name);
     localStorage.setItem(LocalStorgeKeyName.selectedUserRole,user.familyRole);
-    window.location.href='/';
+    localStorage.setItem(LocalStorgeKeyName.selectedUserId,user.id.toString());
+
+    store.dispatch({type:CurrentUserActionType.SET , payload:user});
+    console.log(store.getState().currentUser.name);
+    window.location.href='http://localhost:3000/';
     }
 
     return(

@@ -86,10 +86,10 @@ export default function EditMeal(props: EditMealProps) {
     /**
      * This states stores the updated array of the recipes for the meal
      */
-    const [displayedRecipes, setdisplayedRecipes] = useState<Recipe[]>(selectedMealFromHome.recipeList);
+    const [displayedRecipes, setdisplayedRecipes] = useState<Recipe[]>(selectedMealFromHome.approvedRecipes);
     useEffect(() => {
 
-        selectedMealFromHome.recipeList = displayedRecipes;
+        selectedMealFromHome.approvedRecipes = displayedRecipes;
         updateMealFunc(selectedMealFromHome);
     }, [displayedRecipes])//for testing
     /**

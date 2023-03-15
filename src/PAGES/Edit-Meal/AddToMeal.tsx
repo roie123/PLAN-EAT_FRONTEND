@@ -9,7 +9,10 @@ import {State} from "../../Redux/reducers";
 import {bindActionCreators} from "redux";
 import {updateMealAction} from "../../Redux/action-creators/mealActionCreator";
 import Recipe from "../../MODELS/Recipe";
-import {updateMeal} from "../../SERVICES/MealService";
+import {addPendingRecipes, updateMeal} from "../../SERVICES/MealService";
+import {LocalStorgeKeyName} from "../../MODELS/ENUMS/LocalStorgeKeyName";
+import {UserType} from "../../MODELS/ENUMS/UserType";
+import store from "../../Redux/store";
 
 interface AddRecipeToMealProps {
     recipes: Recipe[]
@@ -21,11 +24,25 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
      */
     const selectedMealFromHomeComponent = useSelector((state: State) => state.meal);
 
-    function sendMealToDBToBeUpdated() {
-        const recepies: Recipe[] = [...selectedRecipes, ...selectedMealFromHomeComponent.recipeList];
-        selectedMealFromHomeComponent.recipeList = recepies;
-        updateMeal(selectedMealFromHomeComponent.id, selectedMealFromHomeComponent);
-        window.location.href = '/'
+   async function sendMealToDBToBeUpdated() {
+        const recepies: Recipe[] = [...selectedRecipes, ...selectedMealFromHomeComponent.approvedRecipes];
+        selectedMealFromHomeComponent.approvedRecipes = recepies;
+        switch (localStorage.getItem(LocalStorgeKeyName.selectedUserRole)){
+            case 'main':{
+            await     updateMeal(selectedMealFromHomeComponent.id, selectedMealFromHomeComponent);
+              await  console.log("Meal Updated thru main user");
+                return;
+            }
+            case 'regular':{
+                let userId :number = parseInt(localStorage.getItem(LocalStorgeKeyName.selectedUserId)!);
+            await    console.log( await addPendingRecipes(selectedMealFromHomeComponent.id,userId,selectedRecipes));
+                console.log("Meal Updated thru regular user");
+                return;
+            }
+
+        }
+
+       window.location.replace('http://localhost:3000/')
     }
 
     /**
@@ -58,7 +75,6 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
         setselectedRecipes((recipes) => (selectedRecipes.filter((recipeFromArray) => recipeFromArray.name !== recipe.name)));
 
     }
-
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     return (
         <>

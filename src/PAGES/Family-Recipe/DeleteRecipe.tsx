@@ -2,6 +2,7 @@ import { debounce } from '@mui/material';
 import react, { useState } from 'react'
 import Recipe from '../../MODELS/Recipe'
 import { deleteRecipe } from '../../SERVICES/RecipeService';
+import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
 
 
 interface DeleteRecipeProps{
@@ -10,6 +11,14 @@ interface DeleteRecipeProps{
 }
 export default function DeleteRecipe(props:DeleteRecipeProps){
 const defaultRecipe:Recipe={
+    requestCreator: {
+        id :0 ,
+        isActive:true,
+        name:"",
+        favoriteRecipes:[],
+        imgUrl:"",
+        familyRole:FamilyRole.regular
+    },
     id: 0,
     name: '',
     imgUrl: '',

@@ -1,5 +1,6 @@
 export enum LocalStorgeKeyName{
    selectedUserName='selectedUserName',
     isSelected='isSelected',
-    selectedUserRole='selectedUserRole'
+    selectedUserRole='selectedUserRole',
+    selectedUserId='selectedUserId'
 }

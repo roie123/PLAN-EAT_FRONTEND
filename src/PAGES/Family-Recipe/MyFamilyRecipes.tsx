@@ -12,9 +12,19 @@ import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import EditRecipeWindow from './EditRecipe';
 import AddNewRecipe from './AddNewRecipe';
 import DeleteRecipe from './DeleteRecipe';
+import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
 export default function(){
 const family = useContext(FamilyContext);
 const recipe :Recipe= {
+    requestCreator: {
+        id :0 ,
+        isActive:true,
+        name:"",
+        favoriteRecipes:[],
+        imgUrl:"",
+        familyRole:FamilyRole.regular
+    },
+
     id:-1,
     imgUrl:'',
     estimatedPrice:-1,

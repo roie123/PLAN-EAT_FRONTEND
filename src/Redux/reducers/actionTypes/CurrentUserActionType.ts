@@ -1,4 +1,5 @@
 export enum CurrentUserActionType{
-    GET="GET",
-    SET="SET"
+    GET="GET_USER",
+    SET="SET_USER",
+    CLEAR="CLEAR_USER",
 }

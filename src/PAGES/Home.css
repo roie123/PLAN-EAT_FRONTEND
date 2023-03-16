@@ -154,3 +154,39 @@ img{
     text-align: center;
     margin-bottom: 2vh;
 }
+
+.recipe-pop-up{
+    padding: 3vh;
+    width: 40vh;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+.recipe-pop-up .img-cont{
+    width: 15vh;
+    height: 15vh;
+}
+.recipe-pop-up h2{
+    margin-bottom: 4vh;
+}
+.ing-circle-cont{
+display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+
+}
+
+.ing-circle{
+
+}
+
+.ing-circle .img-cont{
+    width: 6vh;
+    height: 6vh;
+}

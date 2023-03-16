@@ -16,9 +16,14 @@ import EntryPage from "./Entry/EntryPage";
 import {LocalStorgeKeyName} from "../MODELS/ENUMS/LocalStorgeKeyName";
 import {User} from "../MODELS/User";
 import {FamilyRole} from "../MODELS/ENUMS/FamilyRole";
-import CartPage from "./Cart/CartPage";
 import store from "../Redux/store";
 import {Family} from "../MODELS/Family";
+import Dialog from "@mui/material/Dialog";
+import {Button, Typography} from "@mui/material";
+import {CurrentUserActionType} from "../Redux/reducers/actionTypes/CurrentUserActionType";
+import Recipe from "../MODELS/Recipe";
+import {updateMeal} from "../SERVICES/MealService";
+import {MealAddOnRequestDTO} from "../MODELS/MealAddOnRequestDTO";
 
 export default function HomePage(){
 
@@ -51,7 +56,12 @@ export default function HomePage(){
 
     const [family,setfamily] =useState<Family>(useContext(FamilyContext));
 
-    // const family = useContext(FamilyContext);
+    const [currentActiveUser,setcurrentActiveUser] =useState<User>();
+
+    function handleUserChange(user:User){
+        // console.log("HELLO FROM HOME PAGE ");
+        setcurrentActiveUser(user);
+    }
 
     /**
      * This is for emigrating to the Redux state Management
@@ -62,7 +72,7 @@ export default function HomePage(){
         });
 
         return () => unsubscribe();
-    },[])
+    },[currentActiveUser])
 
 
 
@@ -91,6 +101,10 @@ export default function HomePage(){
      * @param meal the selected meal by the user in the home component, for  passing down as a prop to edit meal
      */
     function handleClickOnEditButton(meal:Meal){
+        if (currentActiveUser?.familyRole!=="mainUser"){
+            setpopUpSelection(1);
+            return;
+        }
         setDisplaySelection(3);
         updateMealFunc(meal);
     }
@@ -101,10 +115,83 @@ export default function HomePage(){
     function moveToFamilySpace() {
         setDisplaySelection(4);
     }
-console.log(family);
+
+
+    /**
+     * This state is in charge of displaying the popups 
+     */
+    const [popUpSelection,setpopUpSelection] =useState<number>(0);
+
+
+
+    function handleChangeInCurrentUserInStore(){
+        if(currentActiveUser!==store.getState().currentUser){
+            if (store.getState().currentUser.id===0){
+                family.familyMembers.map(user => {
+                    if (localStorage.getItem(LocalStorgeKeyName.selectedUserName) === user.name){
+                        store.dispatch({type:CurrentUserActionType.SET , payload:user})
+                        return;
+                    }
+                });
+
+                setDisplaySelection(0);
+                return;
+            }
+
+
+            setcurrentActiveUser(store.getState().currentUser);
+        }
+
+
+    }
+const unsubscribe = store.subscribe(handleChangeInCurrentUserInStore);
+
+    console.log(family);
+function handleUserAddedRecipesToMeal(){
+    setDisplaySelection(1);
+}
+
+
+    /**
+     * This function handles the showing of the recipe card pop up
+     * @param recipe the recipe the user wants to look at
+     */
+    const [selectedRecipeToPop,setselectedRecipeToPop] =useState<Recipe>();
+    const [requestCreator,setrequestCreator] =useState<string>('');
+    const [selectedMeal,setselectedMeal] =useState<Meal>();
+    
+    function handleClickOnRecipeImage(recipe: Recipe , isRequest:boolean, userName:string) {
+
+        setselectedRecipeToPop(recipe);
+        setrequestCreator(userName);
+           !isRequest ?   setpopUpSelection(2) : setpopUpSelection(3);
+    }
+
+     async function approveMealAddOn(recipe:Recipe){
+        selectedMeal?.approvedRecipes.push(recipe);
+
+         let evilIndex :number = -1;
+
+            selectedMeal?.mealAddOnRequestDTOList.map(addOn=> {
+            if (addOn.userName === requestCreator){
+               evilIndex=  addOn.requestedRecipes.indexOf(recipe);
+                selectedMeal?.mealAddOnRequestDTOList.splice(evilIndex,1);
+                console.log(selectedMeal?.mealAddOnRequestDTOList);
+            }
+
+        });
+          const  mealForDB :Meal = {...selectedMeal} as Meal;
+
+            if (evilIndex !== -1){
+                   await updateMeal(selectedMeal?.id!,mealForDB );
+                   console.log("Hi!");
+            }
+
+    }
+
     return (
         <>
-            {(displaySelection === 0) ? (<EntryPage users={family.familyMembers}/>) : null}
+            {(displaySelection === 0) ? (<EntryPage users={family.familyMembers} handleChange={handleUserChange}/>) : null}
             {(displaySelection === 1) ? (<>
                 <div className="familiy-list-cont" onClick={() => moveToFamilySpace()}>
                     <FamilyAvatarsList/>
@@ -129,10 +216,9 @@ console.log(family);
                                     </div>
                                     <div className="recipes-cont">
                                         {meal.approvedRecipes.map((recipe) => (
-                                            <>
-                                                <div key={recipe.id + Math.random() * (10000000)}
+                                                <div key={recipe.id + Math.random() * (100)}
                                                      className="recipe-card">
-                                                    <div className="img-cont">
+                                                    <div className="img-cont" onClick={()=> handleClickOnRecipeImage(recipe,false,'')}>
                                                         <img src={recipe.imgUrl} alt={recipe.name}/>
                                                     </div>
                                                     <h6 className="recipe-name">{recipe.name}</h6>
@@ -140,7 +226,6 @@ console.log(family);
                                                 </div>
 
 
-                                            </>
 
 
                                         ))}
@@ -148,11 +233,11 @@ console.log(family);
 
                                             addOn.requestedRecipes.map((recipe) => (
                                                 <>
-                                                    <div key={recipe.id + Math.random() * (10000)}
+                                                    <div key={recipe.id + Math.random() * (1000)}
                                                          className="recipe-card-pending">
-                                                        <div className={"user-circle-pending"}>
+                                                        <div className={"user-circle-pending"} onClick={()=> handleClickOnRecipeImage(recipe,true, addOn.userName)}>
                                                             <div className="img-cont">
-                                                                <img  src={addOn.userImgUrl} alt={recipe.name}/>
+                                                                <img   src={addOn.userImgUrl} alt={recipe.name}/>
 
                                                             </div>
                                                         </div>
@@ -198,11 +283,73 @@ console.log(family);
 
 
             </>) : null}
-            {(displaySelection === 2) ? (<AddToMeal recipes={family.favoriteRecipes}/>) : null}
-            {(displaySelection === 3) ? (<EditMeal recipes={family.favoriteRecipes}/>) : null}
+            {(displaySelection === 2) ? (<AddToMeal handleDone={handleUserAddedRecipesToMeal} recipes={family.favoriteRecipes}/>) : null}
+            {(displaySelection === 3) ? (<EditMeal handleDone={handleUserAddedRecipesToMeal} recipes={family.favoriteRecipes}/>) : null}
             {(displaySelection === 4) ? (<MyFamilyPage family={family}/>) : null}
 
+
+
+
+            <Dialog open={popUpSelection===1}>
+                    <Typography>
+                        We Are Sorry, Only Your Family's Main User Can Fully Edit Your Meals
+                    </Typography>
+                    <Button onClick={()=> setpopUpSelection(0)}>Close</Button>
+            </Dialog>
+
+            <Dialog open={popUpSelection===2}>
+                <div className={'recipe-pop-up'}>
+
+                    <div className="img-cont">
+                        <img src={selectedRecipeToPop?.imgUrl} alt={selectedRecipeToPop?.name}/>
+
+                    </div>
+                        <h2>{selectedRecipeToPop?.name}</h2>
+
+                    <h4>Ingredients</h4>
+
+                    <div className={'ing-circle-cont'}>
+                        {selectedRecipeToPop?.ingredients.map(ing=> (
+                            <div className={'ing-circle'}>
+                                <div className="img-cont">
+                                    <img  src={ing.imgUrl} alt={ing.name}/>
+
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <Button sx={{height:'9vh'}} onClick={()=> setpopUpSelection(0)}>Close</Button>
+            </Dialog>
+
+
+
+
+
+            <Dialog open={popUpSelection===3}> {/*// this is the pop up for a mealAddOn Request*/}
+
+                <div className={'recipe-pop-up'}>
+
+                    <div className="img-cont">
+                        <img src={selectedRecipeToPop?.imgUrl} alt={selectedRecipeToPop?.name}/>
+
+                    </div>
+                    <h2>{selectedRecipeToPop?.name}</h2>
+
+                    <p>requested by {requestCreator}</p>
+
+
+                </div>
+                {currentActiveUser?.familyRole === FamilyRole.mainUser ? <Button sx={{height:'9vh'}}  onClick={()=> approveMealAddOn(selectedRecipeToPop as Recipe)} >Accept Request</Button> : null}
+                <Button sx={{height:'9vh'}} onClick={()=> setpopUpSelection(0)}>Close</Button>
+            </Dialog>
+
+
+
+
+
         </>
+
 
     );
 }

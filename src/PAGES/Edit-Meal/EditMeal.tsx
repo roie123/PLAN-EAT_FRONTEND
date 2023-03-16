@@ -17,9 +17,13 @@ import {bindActionCreators} from "redux";
 import {updateMealAction} from "../../Redux/action-creators/mealActionCreator";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import {Meal} from "../../MODELS/Meal";
+import store from "../../Redux/store";
+import {FamilyActionTypes} from "../../Redux/reducers/actionTypes/FamilyActionTypes";
+import {getFamily} from "../../SERVICES/FamilyService";
 
 interface EditMealProps {
-    recipes: Recipe[];
+    recipes: Recipe[],
+    handleDone():void
 }
 
 export default function EditMeal(props: EditMealProps) {
@@ -105,11 +109,13 @@ export default function EditMeal(props: EditMealProps) {
     /**
      * This method sends the selected meal to be updated in the Database
      */
-    function sendMealToDB() {
+     async function sendMealToDB() {
         selectedMealFromHome.numberOfEaters = numberOfEaters;
         selectedMealFromHome.mealTime = mealTime;
-        updateMeal(selectedMealFromHome.id, selectedMealFromHome);
-        window.location.href = '/'
+        await updateMeal(selectedMealFromHome.id, selectedMealFromHome);
+       await store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload: await getFamily()});
+
+        props.handleDone();
     }
 
 
@@ -175,7 +181,7 @@ export default function EditMeal(props: EditMealProps) {
 
 
             </>) : null}
-            {(displaySelection === 2) ? (<AddToMeal recipes={props.recipes}/>) : null}
+            {(displaySelection === 2) ? (<AddToMeal handleDone={props.handleDone} recipes={props.recipes}/>) : null}
 
 
         </>

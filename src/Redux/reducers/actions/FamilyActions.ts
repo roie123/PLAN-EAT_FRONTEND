@@ -19,8 +19,12 @@ interface UpdateFamilyAction {
     type:FamilyActionTypes.UPDATE_FAMILY,
     payload:Family
 }
+interface RefreshFamily {
+    type:FamilyActionTypes.REFRESH_FAMILY,
+    payload:Family
+}
 
-export type FamilyAction = GetFamilyAction | SetFamilyAction |  UpdateFamilyAction ;
+export type FamilyAction = GetFamilyAction | SetFamilyAction |  UpdateFamilyAction | RefreshFamily ;
 
 //  export interface GetFamilyAction{
 //     type:FamilyActionTypes.GET_FAMILY,

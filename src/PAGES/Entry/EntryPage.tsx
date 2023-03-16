@@ -8,7 +8,8 @@ import {CurrentUserActionType} from "../../Redux/reducers/actionTypes/CurrentUse
 
 
 interface EntryPageProps{
-    users:User[]
+    users:User[],
+    handleChange(user:User):void
 }
 
 
@@ -18,13 +19,13 @@ export default function EntryPage(props:EntryPageProps){
     useEffect(()=>{    },[users])//for testing
 
     function handleClickOnUser(user:User){
+        props.handleChange(user);
     localStorage.setItem(LocalStorgeKeyName.selectedUserName,user.name);
     localStorage.setItem(LocalStorgeKeyName.selectedUserRole,user.familyRole);
     localStorage.setItem(LocalStorgeKeyName.selectedUserId,user.id.toString());
 
     store.dispatch({type:CurrentUserActionType.SET , payload:user});
-    console.log(store.getState().currentUser.name);
-    window.location.href='http://localhost:3000/';
+    // window.location.href='http://localhost:3000/';
     }
 
     return(

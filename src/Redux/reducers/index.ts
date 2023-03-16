@@ -7,10 +7,10 @@ import {currentUserReducer} from "./CurrentUserReducer";
 
 
 const reducers = combineReducers({
+    currentUser:currentUserReducer,
     bank : bankReducer,
     meal: mealReducer,
     family:familyReducer,
-    currentUser:currentUserReducer
 });
 
 

@@ -1,21 +1,20 @@
-import react, {useContext, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import './AddToMealStyle.css'
-import {Family} from "../../MODELS/Family";
-import {FamilyContext} from "../../Provider/FamilyProvider";
-import {Meal} from "../../MODELS/Meal";
-import {EditMealContext} from "../../Provider/EditMealProvider";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {State} from "../../Redux/reducers";
-import {bindActionCreators} from "redux";
-import {updateMealAction} from "../../Redux/action-creators/mealActionCreator";
 import Recipe from "../../MODELS/Recipe";
 import {addPendingRecipes, updateMeal} from "../../SERVICES/MealService";
-import {LocalStorgeKeyName} from "../../MODELS/ENUMS/LocalStorgeKeyName";
-import {UserType} from "../../MODELS/ENUMS/UserType";
 import store from "../../Redux/store";
+import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
+import {Meal} from "../../MODELS/Meal";
+import {Family} from "../../MODELS/Family";
+import {Day} from "../../MODELS/Day";
+import {FamilyActionTypes} from "../../Redux/reducers/actionTypes/FamilyActionTypes";
+import {getFamily} from "../../SERVICES/FamilyService";
 
 interface AddRecipeToMealProps {
-    recipes: Recipe[]
+    recipes: Recipe[],
+    handleDone():void
 }
 
 export default function AddToMeal(props: AddRecipeToMealProps) {
@@ -27,15 +26,22 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
    async function sendMealToDBToBeUpdated() {
         const recepies: Recipe[] = [...selectedRecipes, ...selectedMealFromHomeComponent.approvedRecipes];
         selectedMealFromHomeComponent.approvedRecipes = recepies;
-        switch (localStorage.getItem(LocalStorgeKeyName.selectedUserRole)){
-            case 'main':{
-            await     updateMeal(selectedMealFromHomeComponent.id, selectedMealFromHomeComponent);
+        switch (store.getState().currentUser.familyRole){
+            case FamilyRole.mainUser:{
+                await updateMeal(selectedMealFromHomeComponent.id, selectedMealFromHomeComponent);
+                store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload: await getFamily()});
+
+                    props.handleDone();
               await  console.log("Meal Updated thru main user");
                 return;
+                break;
             }
-            case 'regular':{
-                let userId :number = parseInt(localStorage.getItem(LocalStorgeKeyName.selectedUserId)!);
+            case FamilyRole.regular:{
+                let userId :number = store.getState().currentUser.id;
             await    console.log( await addPendingRecipes(selectedMealFromHomeComponent.id,userId,selectedRecipes));
+                store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload: await getFamily()});
+                props.handleDone();
+
                 console.log("Meal Updated thru regular user");
                 return;
             }

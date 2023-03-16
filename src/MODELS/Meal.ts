@@ -9,7 +9,7 @@ isActive:boolean,
 mealTime:string,
 approvedRecipes:Recipe[],
     pendingRecipes : Recipe[],
-    mealAddOnRequestDTOList:MealAddOnRequestDTO[]
+    mealAddOnRequestDTOList:MealAddOnRequestDTO[],
 }
 
 

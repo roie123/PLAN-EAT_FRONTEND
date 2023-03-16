@@ -13,182 +13,207 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
-import { FamilyContext } from '../Provider/FamilyProvider';
-import { useContext } from 'react';
-import { Link } from '@mui/material';
+import {FamilyContext} from '../Provider/FamilyProvider';
+import {useContext} from 'react';
+import {Link} from '@mui/material';
+import {LocalStorgeKeyName} from "../MODELS/ENUMS/LocalStorgeKeyName";
+import store from "../Redux/store";
+import {CurrentUserActionType} from "../Redux/reducers/actionTypes/CurrentUserActionType";
 // import { Link } from 'react-router-dom';
 
 const pages = ['My Family', 'Cart', 'My Recipes'];
-const settings = [ 'Account','Switch User', 'Logout'];
+const settings = ['Account', 'Switch User', 'Logout'];
 
 function ResponsiveAppBar() {
-  const family= useContext(FamilyContext)
+    const family = useContext(FamilyContext)
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
 
-     function getTarget(item:string):string{
-          switch(item){
-              case ('My Family') :{
+    function getTarget(item: string): string {
+        switch (item) {
+            case ('My Family') : {
                 return '/my-family'
-              }
-              case ('Cart') :{
+            }
+            case ('Cart') : {
                 return '/cart'
-              }
-              case ('My Recipes') :{
+            }
+            case ('My Recipes') : {
                 return '/my-family-recipes'
-              }
+            }
 
-                  
-          }return '/'
+
+        }
+        return '/'
     }
 
-  return (
-    <AppBar position="sticky">
-      <Container maxWidth="xl" > 
-        <Toolbar disableGutters>
+    function handleClearLocalStorge() {
+        localStorage.removeItem(LocalStorgeKeyName.selectedUserId);
+        localStorage.removeItem(LocalStorgeKeyName.selectedUserName);
+        localStorage.removeItem(LocalStorgeKeyName.selectedUserRole);
+        // @ts-ignore
+        store.dispatch({type:CurrentUserActionType.CLEAR , payload:null})
+    }
 
-            <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
+    function handleClickOnSetting(setting: string) {
+        switch (setting) {
+            case 'Switch User':{
+                handleClearLocalStorge();
+                break;
+            }
+        }
+    }
 
-          </Typography>
+    return (
+        <AppBar position="sticky">
+            <Container maxWidth="xl">
+                <Toolbar disableGutters>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page}
-                 onClick={handleCloseNavMenu}
-                 
-                 >
-                  <Link textAlign="center" href={getTarget(page)} >{page}</Link>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-                <Diversity1Icon    onClick={() => window.location.replace('http://localhost:3000/')}   sx={{ cursor:'pointer', display: { xs: 'flex', md: 'none' }, mr: 1, fontSize:'2.6rem' }}  >
-                </Diversity1Icon>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="a"
+                        href="/"
+                        sx={{
+                            mr: 2,
+                            display: {xs: 'none', md: 'flex'},
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                    >
+
+                    </Typography>
+
+                    <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleOpenNavMenu}
+                            color="inherit"
+                        >
+                            <MenuIcon/>
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElNav}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            open={Boolean(anchorElNav)}
+                            onClose={handleCloseNavMenu}
+                            sx={{
+                                display: {xs: 'block', md: 'none'},
+                            }}
+                        >
+                            {pages.map((page) => (
+                                <MenuItem key={page}
+                                          onClick={handleCloseNavMenu}
+
+                                >
+                                    <Link textAlign="center" href={getTarget(page)}>{page}</Link>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+                    <Diversity1Icon onClick={() => window.location.replace('http://localhost:3000/')} sx={{
+                        cursor: 'pointer',
+                        display: {xs: 'flex', md: 'none'},
+                        mr: 1,
+                        fontSize: '2.6rem'
+                    }}>
+                    </Diversity1Icon>
 
 
+                    <Typography
+                        variant="h5"
+                        noWrap
+                        component="a"
+                        href=""
+                        sx={{
+                            mr: 2,
+                            display: {xs: 'flex', md: 'none'},
+                            flexGrow: 1,
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                    >
 
+                    </Typography>
+                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                        {pages.map((page) => (
+                            <Button
+                                key={page}
+                                onClick={handleCloseNavMenu}
+                                sx={{my: 2, color: 'white', display: 'block'}}
+                            >
+                                {page}
+                            </Button>
+                        ))}
+                    </Box>
 
-
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={family.name} src={family.imgUrl} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
+                    <Box sx={{flexGrow: 0}}>
+                        <Tooltip title="Open settings">
+                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                <Avatar alt={family.name} src={family.imgUrl}/>
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{mt: '45px'}}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {settings.map((setting) => (
+                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center"
+                                                onClick={() => handleClickOnSetting(setting)}>{setting}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+                </Toolbar>
+            </Container>
+        </AppBar>
+    );
 }
+
 export default ResponsiveAppBar;

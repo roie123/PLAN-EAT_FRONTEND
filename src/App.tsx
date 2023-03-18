@@ -44,9 +44,10 @@ function App() {
 
             <FamilyContext.Provider value={family}>
 
-                <AppNavBar/>
 
                 <Router>
+                    <AppNavBar/>
+
                     <Routes>
                         <Route path='' element={<HomePage/>}/>
 

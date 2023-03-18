@@ -22,8 +22,10 @@ import Dialog from "@mui/material/Dialog";
 import {Button, Typography} from "@mui/material";
 import {CurrentUserActionType} from "../Redux/reducers/actionTypes/CurrentUserActionType";
 import Recipe from "../MODELS/Recipe";
-import {updateMeal} from "../SERVICES/MealService";
+import {approveMealAddOnRequest, updateMeal} from "../SERVICES/MealService";
 import {MealAddOnRequestDTO} from "../MODELS/MealAddOnRequestDTO";
+import {Day} from "../MODELS/Day";
+import {FamilyActionTypes} from "../Redux/reducers/actionTypes/FamilyActionTypes";
 
 export default function HomePage(){
 
@@ -59,7 +61,6 @@ export default function HomePage(){
     const [currentActiveUser,setcurrentActiveUser] =useState<User>();
 
     function handleUserChange(user:User){
-        // console.log("HELLO FROM HOME PAGE ");
         setcurrentActiveUser(user);
     }
 
@@ -146,7 +147,6 @@ export default function HomePage(){
     }
 const unsubscribe = store.subscribe(handleChangeInCurrentUserInStore);
 
-    console.log(family);
 function handleUserAddedRecipesToMeal(){
     setDisplaySelection(1);
 }
@@ -159,41 +159,50 @@ function handleUserAddedRecipesToMeal(){
     const [selectedRecipeToPop,setselectedRecipeToPop] =useState<Recipe>();
     const [requestCreator,setrequestCreator] =useState<string>('');
     const [selectedMeal,setselectedMeal] =useState<Meal>();
+    const [selectedMealAddOnRequest,setselectedMealAddOnRequest] =useState<MealAddOnRequestDTO>();
+    const [selectedDay,setselectedDay] =useState<Day>();
     
-    function handleClickOnRecipeImage(recipe: Recipe , isRequest:boolean, userName:string) {
-
+    async function handleClickOnRecipeImage(recipe: Recipe , isRequest:boolean, userName:string , mealAddOn:MealAddOnRequestDTO|null , meal:Meal, day:Day) {
+        setselectedDay(day);
+        setselectedMeal(meal);
         setselectedRecipeToPop(recipe);
         setrequestCreator(userName);
-           !isRequest ?   setpopUpSelection(2) : setpopUpSelection(3);
+        if (isRequest && mealAddOn){
+            setselectedMealAddOnRequest(mealAddOn);
+            setpopUpSelection(3);
+        }
+        else setpopUpSelection(2);
+           // !isRequest ?   setpopUpSelection(2) : setpopUpSelection(3);
     }
 
      async function approveMealAddOn(recipe:Recipe){
-        selectedMeal?.approvedRecipes.push(recipe);
 
-         let evilIndex :number = -1;
+               const updatedMeal =  await   approveMealAddOnRequest(selectedMeal?.id!,selectedMealAddOnRequest?.id!,recipe);
+                let newFamily : Family = {...store.getState().family};
+                let day : Day = {...selectedDay!};
+                    const evilIndex :number =  day.mealList.findIndex(meal => meal===selectedMeal);
 
-            selectedMeal?.mealAddOnRequestDTOList.map(addOn=> {
-            if (addOn.userName === requestCreator){
-               evilIndex=  addOn.requestedRecipes.indexOf(recipe);
-                selectedMeal?.mealAddOnRequestDTOList.splice(evilIndex,1);
-                console.log(selectedMeal?.mealAddOnRequestDTOList);
-            }
+                    day.mealList.splice(evilIndex,1,updatedMeal);
+                    const evilIndexOfDay: number = family.dayList?.indexOf(selectedDay!)!;
+                    newFamily.dayList?.splice(evilIndexOfDay,1,day);
+                    console.log(newFamily);
 
-        });
-          const  mealForDB :Meal = {...selectedMeal} as Meal;
+         store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload:newFamily});
 
-            if (evilIndex !== -1){
-                   await updateMeal(selectedMeal?.id!,mealForDB );
-                   console.log("Hi!");
-            }
+         setpopUpSelection(0);
+            // }
 
     }
+    
+    
+    const [animationSelection,setanimationSelection] =useState<boolean>(true);
 
+console.log(family);
     return (
         <>
             {(displaySelection === 0) ? (<EntryPage users={family.familyMembers} handleChange={handleUserChange}/>) : null}
             {(displaySelection === 1) ? (<>
-                <div className="familiy-list-cont" onClick={() => moveToFamilySpace()}>
+                <div className="familiy-list-cont" onClick={() => moveToFamilySpace()} >
                     <FamilyAvatarsList/>
                 </div>
                 <div className="car-cont">
@@ -218,7 +227,7 @@ function handleUserAddedRecipesToMeal(){
                                         {meal.approvedRecipes.map((recipe) => (
                                                 <div key={recipe.id + Math.random() * (100)}
                                                      className="recipe-card">
-                                                    <div className="img-cont" onClick={()=> handleClickOnRecipeImage(recipe,false,'')}>
+                                                    <div className="img-cont" onClick={()=> handleClickOnRecipeImage(recipe,false,'',null , meal,day)}>
                                                         <img src={recipe.imgUrl} alt={recipe.name}/>
                                                     </div>
                                                     <h6 className="recipe-name">{recipe.name}</h6>
@@ -232,10 +241,10 @@ function handleUserAddedRecipesToMeal(){
                                         {meal.mealAddOnRequestDTOList.map((addOn) => (
 
                                             addOn.requestedRecipes.map((recipe) => (
-                                                <>
+
                                                     <div key={recipe.id + Math.random() * (1000)}
                                                          className="recipe-card-pending">
-                                                        <div className={"user-circle-pending"} onClick={()=> handleClickOnRecipeImage(recipe,true, addOn.userName)}>
+                                                        <div className={"user-circle-pending"} onClick={()=> handleClickOnRecipeImage(recipe,true, addOn.userName,addOn, meal,day)}>
                                                             <div className="img-cont">
                                                                 <img   src={addOn.userImgUrl} alt={recipe.name}/>
 
@@ -249,7 +258,6 @@ function handleUserAddedRecipesToMeal(){
                                                     </div>
 
 
-                                                </>
 
 
                                             ))
@@ -261,12 +269,12 @@ function handleUserAddedRecipesToMeal(){
                                     </div>
 
 
-                                    <div className="nice-points-cont">
+                                    <div className=  { "nice-points-cont"} >
                                         <EditIcon onClick={() => handleClickOnEditButton(meal)}
-                                                  sx={{fontSize: '2.5rem', cursor: 'pointer'}} className="nice-point"
+                                                  sx={{ fontSize: '2.5rem', cursor: 'pointer'}} className=  {(animationSelection) ?"nice-point" : "nice-point-no-ani"}
                                                   style={{animationDelay: '0.25s'}}></EditIcon>
                                         <AddIcon onClick={() => handleClickOnAddButton(meal)}
-                                                 sx={{fontSize: '2.5rem', cursor: 'pointer'}} className="nice-point"
+                                                 sx={{fontSize: '2.5rem', cursor: 'pointer'}} className=  {(animationSelection) ?"nice-point" : "nice-point-no-ani" } onAnimationEnd={()=>setanimationSelection(false)}
                                                  style={{animationDelay: '0.75s'}}></AddIcon>
                                         {/*<DeleteIcon sx={{fontSize:'2rem'}}  className="nice-point" style={{animationDelay:'0.75s'}}></DeleteIcon> */}
 

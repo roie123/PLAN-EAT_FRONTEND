@@ -12,6 +12,7 @@ import {FamilyContext} from "../../Provider/FamilyProvider";
 import {updateCart} from "../../SERVICES/CartService";
 import Dialog from '@mui/material/Dialog';
 import {Button, Typography} from "@mui/material";
+import store from "../../Redux/store";
 
 interface CartPageProps {
     family: Family

@@ -19,6 +19,7 @@ import {Link} from '@mui/material';
 import {LocalStorgeKeyName} from "../MODELS/ENUMS/LocalStorgeKeyName";
 import store from "../Redux/store";
 import {CurrentUserActionType} from "../Redux/reducers/actionTypes/CurrentUserActionType";
+import {NavLink, useNavigate} from "react-router-dom";
 // import { Link } from 'react-router-dom';
 
 const pages = ['My Family', 'Cart', 'My Recipes'];
@@ -78,7 +79,10 @@ function ResponsiveAppBar() {
             }
         }
     }
-
+    const navigate = useNavigate();
+    function clickOnHomeButton(){
+            navigate('/')
+    }
     return (
         <AppBar position="sticky">
             <Container maxWidth="xl">
@@ -136,12 +140,12 @@ function ResponsiveAppBar() {
                                           onClick={handleCloseNavMenu}
 
                                 >
-                                    <Link textAlign="center" href={getTarget(page)}>{page}</Link>
+                                    <NavLink  to={getTarget(page)}>{page}</NavLink>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
-                    <Diversity1Icon onClick={() => window.location.replace('http://localhost:3000/')} sx={{
+                    <Diversity1Icon onClick={() => clickOnHomeButton()} sx={{
                         cursor: 'pointer',
                         display: {xs: 'flex', md: 'none'},
                         mr: 1,

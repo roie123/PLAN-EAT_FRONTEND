@@ -24,3 +24,13 @@ export const addPendingRecipes = async (mealId: number,userId:number, recipes:Re
         throw error;
     }
 };
+
+export const approveMealAddOnRequest = async (mealId: number,mealAddOnRequestId:number, recipe:Recipe): Promise<Meal> => {
+    try {
+        const response = await axios.put(`${baseURL}/approveRequest/${mealId}/${mealAddOnRequestId}`, recipe);
+        return response.data as Meal;
+    } catch (error) {
+        throw error;
+    }
+};
+

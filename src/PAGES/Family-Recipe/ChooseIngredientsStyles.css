@@ -5,11 +5,15 @@
 .search-container{
   position: relative;
   padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .search-input{
   width: 80vw;
-  border: 1vh solid #fff;
+  border: 0.2vh solid #000000;
   background: transparent;
   padding: 1vh 2vh;
   border-radius: 50px;
@@ -165,4 +169,30 @@
   align-items: center;
   gap: 1vh;
 }
+.ing-cont{
+  text-align: center;
 
+}
+.ing-cont .ing-card{
+
+}
+.amount{
+  position: absolute;
+  border-radius: 50%;
+  background-color: #56ff00;
+  width: 3vh;
+  height: 3vh;
+}
+.bottom-ing-display{
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  bottom: 0;
+  width: 100%;
+  height: 15vh;
+  background: linear-gradient(0deg, rgb(0, 131, 40) 0%, rgb(186, 234, 189) 100%);
+  gap: 1vh;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  opacity: 0.95;
+}

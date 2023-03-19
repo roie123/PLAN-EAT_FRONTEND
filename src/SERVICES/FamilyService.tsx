@@ -7,7 +7,7 @@ import {familyReducer} from "../Redux/reducers/FamilyReducer";
 import {FamilyActionTypes} from "../Redux/reducers/actionTypes/FamilyActionTypes";
 
 
-const baseURL = 'http://localhost:8080/api/family';
+const baseURL = 'http://192.168.1.17:8080/api/family';
 
 
 

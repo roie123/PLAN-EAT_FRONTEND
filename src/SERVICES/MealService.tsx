@@ -6,7 +6,7 @@ import store from "../Redux/store";
 import {FamilyActionTypes} from "../Redux/reducers/actionTypes/FamilyActionTypes";
 
 
-const baseURL:string = 'http://localhost:8080/api/meal';
+const baseURL:string = 'http://192.168.1.17:8080/api/meal';
 export const updateMeal = async (id: number, meal:Meal): Promise<Meal> => {
     try {
         const response = await axios.put(`${baseURL}/${id}`, meal);

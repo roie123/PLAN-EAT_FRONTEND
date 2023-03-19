@@ -48,6 +48,7 @@ justify-content: space-around;
 align-items: center;
 
 }
+
 .nice-point{
     font-size: 10vh;
     margin: 5vh;
@@ -95,15 +96,16 @@ margin-bottom: 4vh;
 letter-spacing: 1vh;
 }
 .recipes-cont{
-    /* background-color: aquamarine; */
+     /*background-color: aquamarine;*/
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     overflow-x: scroll;
 }
 
 .recipe-card{
+    margin: 1vh;
 display: flex;
 flex-direction: column;
 height: 30%;
@@ -111,6 +113,8 @@ width: 33%;
 align-items: center;
 }
 .recipe-card-pending{
+    margin: 1vh;
+
     display: flex;
     flex-direction: column;
     height: 30%;

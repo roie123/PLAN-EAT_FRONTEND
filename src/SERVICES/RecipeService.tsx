@@ -4,7 +4,7 @@ import Recipe from '../MODELS/Recipe';
 
 
 
-const baseURL = 'http://localhost:8080/api/recipe';
+const baseURL = 'http://192.168.1.17:8080/api/recipe';
 export const getRecipe = async (id: number): Promise<Recipe> => {
     try {
         const response = await axios.get(`${baseURL}/${id}`);

@@ -2,7 +2,7 @@ import {Cart} from "../MODELS/Cart";
 import {User} from "../MODELS/User";
 import axios from "axios";
 
-const baseURL = "http://localhost:8080/api/cart";
+const baseURL = "http://192.168.1.17:8080/api/cart";
 export const updateCart =  async  (cart:Cart, cartId:number):Promise<Cart> => {
 
         try {

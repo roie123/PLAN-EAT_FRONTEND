@@ -14,7 +14,18 @@ import {createRecipe} from "../../SERVICES/RecipeService";
 import {NewRecipeValuesContext} from "../../SERVICES/NewRecipeContext";
 import {FamilyContext} from "../../Provider/FamilyProvider";
 import {FamilyRole} from "../../MODELS/ENUMS/FamilyRole";
+import {useNavigate} from "react-router-dom";
+import store from "../../Redux/store";
+import {Family} from "../../MODELS/Family";
+import {FamilyActionTypes} from "../../Redux/reducers/actionTypes/FamilyActionTypes";
 
+
+
+
+interface IngredientAndAmount {
+    ingredient:Ingredient,
+    amount:number
+}
 
 export default function ChooseIngredients() {
     let defaultRecipe: Recipe = {
@@ -59,8 +70,21 @@ export default function ChooseIngredients() {
     //ADDING INGREDIENT FROM THE CHILD ELEMENT 
 
 
-    const handleAddingIngredient = (ingredient: Ingredient, finished: boolean) => {
+    const handleAddingIngredient =  (ingredient: Ingredient, finished: boolean) => {
+
         setSelectedIngredients([...selectedIngredients, ingredient])
+        // const temp: IngredientAndAmount[]=[];
+        // selectedIngredients.map(ing=>{
+        //     if (temp.findIndex((ingredient)=> ingredient.ingredient.id===ing.id) > -1){
+        //         const duplicateIngredient : number =temp.findIndex((ingredient)=> ingredient.ingredient.id===ing.id);
+        //         let tempObject :IngredientAndAmount = {...temp.at(duplicateIngredient)!}!;
+        //         let duplicateAmount:number = tempObject.amount;
+        //         temp.splice(duplicateIngredient,1,{ingredient:tempObject.ingredient , amount:duplicateAmount+1});
+        //
+        //     }else temp.push({ingredient:ing , amount:0 });
+        // })//end of map
+        // setingredientsAndAmount(temp);
+
     }
 
 
@@ -73,11 +97,15 @@ export default function ChooseIngredients() {
 
         })();
     }, [searchQuery]);
-
-    function sendUserToDB() {
+        const nav = useNavigate();
+      async function sendUserToDB() {
         recipeFromParent.ingredients = selectedIngredients;
-        createRecipe(recipeFromParent, familyId);
-        window.location.href = '/my-family-recipes';
+       let recipeFromDB :Recipe= await createRecipe(recipeFromParent, familyId);
+       let newFamily :Family = store.getState().family;
+       newFamily.favoriteRecipes.push(recipeFromDB);
+       store.dispatch({type:FamilyActionTypes.SET_FAMILY , payload:newFamily});
+        nav('/');
+
     }
 
 
@@ -100,6 +128,32 @@ export default function ChooseIngredients() {
         event.preventDefault();
         handleSubmit(onSave)(event);
     }
+
+
+
+
+    ///This section is for the ingredient selection presentation
+    const [ingredientsAndAmount,setingredientsAndAmount] =useState<IngredientAndAmount[]>();
+
+useEffect(()=> {
+    const temp: IngredientAndAmount[]=[];
+    selectedIngredients.map(ing=>{
+        if (temp.findIndex((ingredient)=> ingredient.ingredient.id===ing.id) > -1){
+            const duplicateIngredient : number =temp.findIndex((ingredient)=> ingredient.ingredient.id===ing.id);
+            let tempObject :IngredientAndAmount = {...temp.at(duplicateIngredient)!}!;
+            let duplicateAmount:number = tempObject.amount;
+            temp.splice(duplicateIngredient,1,{ingredient:tempObject.ingredient , amount:duplicateAmount+1});
+
+        }else temp.push({ingredient:ing , amount:0 });
+    })//end of map
+
+
+    setingredientsAndAmount(temp);
+    console.log(":s");
+},[selectedIngredients])
+//
+
+
     return (
 
 
@@ -123,6 +177,24 @@ export default function ChooseIngredients() {
 
             {ingredients.map((ing) => (<><IngredientCard ingredient={ing}
                                                          onClick={() => handleAddingIngredient(ing, userIsFinished)}/></>))}
+
+
+            <div className={'bottom-ing-display'}>
+                {ingredientsAndAmount?.map(item=> (
+                    <div  className={'ing-cont'}>
+                        <p>{item.ingredient.name}</p>
+                        <div className={'amount'}>
+                            {item.amount+1}
+                        </div>
+                        <div className={'img-cont'}>
+
+
+                            <img src={item.ingredient.imgUrl} alt={item.ingredient.name}/>
+                        </div>
+                    </div>
+
+                ))}
+            </div>
 
         </>
 

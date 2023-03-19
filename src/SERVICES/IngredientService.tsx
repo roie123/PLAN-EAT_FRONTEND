@@ -7,7 +7,7 @@ import { IngredientType } from '../MODELS/ENUMS/IngredientType'
 
 
 
-const apiUrl = `http://localhost:8080/api/ingredients`
+const apiUrl = `http://192.168.1.17:8080/api/ingredients`
 
 export const getAllActiveIngredients = async() : Promise<Ingredient[]> => {
     try{

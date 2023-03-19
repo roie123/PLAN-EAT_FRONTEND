@@ -236,7 +236,7 @@ setpopUpSelection(2);
                     ) : (
 
                         displayedCart.map((item) => (
-                            <div className="item-card">
+                            <div key={item.ingredient.id!*Math.random()} className="item-card">
                                 <div className="upper-cont">
                                     <div className="item-img-cont">
                                         <img src={item.ingredient.imgUrl} alt="shows a pic of an item"/>

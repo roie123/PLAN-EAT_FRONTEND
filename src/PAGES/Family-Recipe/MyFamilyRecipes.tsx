@@ -79,7 +79,7 @@ useEffect(() => {
     return(
 <>
 
-<div className="nice-points-cont">
+<div className="nice-points-cont"   >
   <Button onClick={()=> toggleEditMode()}>
    <EditIcon sx={{fontSize:'2.5rem' , cursor:'pointer'}}  className="nice-point" style={{animationDelay:'0.25s'}}></EditIcon>
    </Button>

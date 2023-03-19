@@ -152,10 +152,7 @@ function handleUserAddedRecipesToMeal(){
 }
 
 
-    /**
-     * This function handles the showing of the recipe card pop up
-     * @param recipe the recipe the user wants to look at
-     */
+
     const [selectedRecipeToPop,setselectedRecipeToPop] =useState<Recipe>();
     const [requestCreator,setrequestCreator] =useState<string>('');
     const [selectedMeal,setselectedMeal] =useState<Meal>();
@@ -226,8 +223,8 @@ console.log(family);
                                     <div className="recipes-cont">
                                         {meal.approvedRecipes.map((recipe) => (
                                                 <div key={recipe.id + Math.random() * (100)}
-                                                     className="recipe-card">
-                                                    <div className="img-cont" onClick={()=> handleClickOnRecipeImage(recipe,false,'',null , meal,day)}>
+                                                     className="recipe-card" onClick={()=> handleClickOnRecipeImage(recipe,false,'',null , meal,day)}>
+                                                    <div className="img-cont" >
                                                         <img src={recipe.imgUrl} alt={recipe.name}/>
                                                     </div>
                                                     <h6 className="recipe-name">{recipe.name}</h6>
@@ -243,8 +240,8 @@ console.log(family);
                                             addOn.requestedRecipes.map((recipe) => (
 
                                                     <div key={recipe.id + Math.random() * (1000)}
-                                                         className="recipe-card-pending">
-                                                        <div className={"user-circle-pending"} onClick={()=> handleClickOnRecipeImage(recipe,true, addOn.userName,addOn, meal,day)}>
+                                                         className="recipe-card-pending" onClick={()=> handleClickOnRecipeImage(recipe,true, addOn.userName,addOn, meal,day)}>
+                                                        <div className={"user-circle-pending"} >
                                                             <div className="img-cont">
                                                                 <img   src={addOn.userImgUrl} alt={recipe.name}/>
 
@@ -271,10 +268,10 @@ console.log(family);
 
                                     <div className=  { "nice-points-cont"} >
                                         <EditIcon onClick={() => handleClickOnEditButton(meal)}
-                                                  sx={{ fontSize: '2.5rem', cursor: 'pointer'}} className=  {(animationSelection) ?"nice-point" : "nice-point-no-ani"}
+                                                  sx={{ fontSize: '3rem', cursor: 'pointer'}} className=  {(animationSelection) ?"nice-point" : "nice-point-no-ani"}
                                                   style={{animationDelay: '0.25s'}}></EditIcon>
                                         <AddIcon onClick={() => handleClickOnAddButton(meal)}
-                                                 sx={{fontSize: '2.5rem', cursor: 'pointer'}} className=  {(animationSelection) ?"nice-point" : "nice-point-no-ani" } onAnimationEnd={()=>setanimationSelection(false)}
+                                                 sx={{fontSize: '3rem', cursor: 'pointer'}} className=  {(animationSelection) ?"nice-point" : "nice-point-no-ani" } onAnimationEnd={()=>setanimationSelection(false)}
                                                  style={{animationDelay: '0.75s'}}></AddIcon>
                                         {/*<DeleteIcon sx={{fontSize:'2rem'}}  className="nice-point" style={{animationDelay:'0.75s'}}></DeleteIcon> */}
 

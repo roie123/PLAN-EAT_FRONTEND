@@ -22,7 +22,7 @@ import {CurrentUserActionType} from "../Redux/reducers/actionTypes/CurrentUserAc
 import {NavLink, useNavigate} from "react-router-dom";
 // import { Link } from 'react-router-dom';
 
-const pages = ['My Family', 'Cart', 'My Recipes'];
+const pages = [ 'Cart', 'My Recipes'];
 const settings = ['Account', 'Switch User', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -48,9 +48,7 @@ function ResponsiveAppBar() {
 
     function getTarget(item: string): string {
         switch (item) {
-            case ('My Family') : {
-                return '/my-family'
-            }
+
             case ('Cart') : {
                 return '/cart'
             }
@@ -136,11 +134,11 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page}
+                                <MenuItem sx={{height:'5vh' , minWidth:'minWidth'}} key={page}
                                           onClick={handleCloseNavMenu}
 
                                 >
-                                    <NavLink  to={getTarget(page)}>{page}</NavLink>
+                                    <NavLink style={{fontSize:'1.5rem' , textDecoration:'none', color:'black'}}    to={getTarget(page)}>{page}</NavLink>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -207,8 +205,8 @@ function ResponsiveAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center"
+                                <MenuItem sx={{height:'5vh' , minWidth:'minWidth'}} key={setting} onClick={handleCloseUserMenu}>
+                                    <Typography fontSize={'1.5rem'} textAlign="center"
                                                 onClick={() => handleClickOnSetting(setting)}>{setting}</Typography>
                                 </MenuItem>
                             ))}

@@ -6,8 +6,9 @@
   .search-container{
     position: relative;
     padding: 20px 50px;
+      background-color: #c85000;
   }
-  
+
   .search-input{
     width: 80vw;
     border: 1vh solid #fff;

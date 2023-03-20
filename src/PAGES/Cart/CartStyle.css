@@ -40,7 +40,7 @@
     width: 100%;
     gap: 1vh;
     padding: 1vh;
-    height: 60vh;
+    height: 50vh;
     overflow-y: scroll;
     box-shadow: rgb(44, 62, 80) 0px 0px 15px 0px inset;
     border-style: solid;
@@ -181,10 +181,12 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-
+    align-items: center;
+    justify-content: space-around;
 }
 .cart-action-cont .restock-button{
-    width: 100%;
+    margin: 1vh;
+    width: 40%;
     text-align: center;
     align-items: center;
     justify-content:center ;

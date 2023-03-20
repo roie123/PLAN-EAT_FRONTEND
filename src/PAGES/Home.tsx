@@ -26,7 +26,7 @@ import {approveMealAddOnRequest, updateMeal} from "../SERVICES/MealService";
 import {MealAddOnRequestDTO} from "../MODELS/MealAddOnRequestDTO";
 import {Day} from "../MODELS/Day";
 import {FamilyActionTypes} from "../Redux/reducers/actionTypes/FamilyActionTypes";
-
+import RefreshIcon from '@mui/icons-material/Refresh';
 export default function HomePage(){
 
     /**\
@@ -38,7 +38,8 @@ export default function HomePage(){
      * (4) For FamilySpace
      */
     const [displaySelection,setDisplaySelection] =useState<number>(0);
-
+    const [loading,setloading] =useState<boolean>(true);
+    
     const defaultUser:User={
         familyRole: FamilyRole.regular, favoriteRecipes: [], id: 0, imgUrl: "", isActive: false, name: ""
 
@@ -75,6 +76,30 @@ export default function HomePage(){
         return () => unsubscribe();
     },[currentActiveUser])
 
+useEffect(()=>{
+    family.dayList?.map(day=> day.mealList.sort((meal1,meal2) => {
+                if (meal1.mealTime===meal2.mealTime){
+                    return 0;
+                }
+                if (meal1.mealTime==='Breakfast'){
+                    return -1;
+                }
+                if (meal2.mealTime==='Breakfast'){
+                    return 1;
+                }
+                if (meal1.mealTime==='Lunch'){
+                    return -1;
+                }
+                if (meal2.mealTime==='Lunch'){
+                    return 1;
+                }
+
+
+                else return -1;
+            }
+        )
+    )
+},[family.dayList])
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -190,15 +215,18 @@ function handleUserAddedRecipesToMeal(){
             // }
 
     }
-    
+
     
     const [animationSelection,setanimationSelection] =useState<boolean>(true);
-
-console.log(family);
+    useEffect(()=>{
+        if (family.id!==0){
+            setloading(false);
+        }
+    },[family])
     return (
         <>
             {(displaySelection === 0) ? (<EntryPage users={family.familyMembers} handleChange={handleUserChange}/>) : null}
-            {(displaySelection === 1) ? (<>
+            {(displaySelection === 1 && !loading) ? (<>
                 <div className="familiy-list-cont" onClick={() => moveToFamilySpace()} >
                     <FamilyAvatarsList/>
                 </div>
@@ -209,7 +237,7 @@ console.log(family);
 
                 <h4 className="next-meals-title">OUR NEXT MEALS</h4>
 
-                <div className="next-meals-cont">
+                <div className="next-meals-cont"  >
 
                     {family.dayList?.map(day => (
 
@@ -223,8 +251,10 @@ console.log(family);
                                     <div className="recipes-cont">
                                         {meal.approvedRecipes.map((recipe) => (
                                                 <div key={recipe.id + Math.random() * (100)}
+
                                                      className="recipe-card" onClick={()=> handleClickOnRecipeImage(recipe,false,'',null , meal,day)}>
                                                     <div className="img-cont" >
+
                                                         <img src={recipe.imgUrl} alt={recipe.name}/>
                                                     </div>
                                                     <h6 className="recipe-name">{recipe.name}</h6>
@@ -288,9 +318,10 @@ console.log(family);
 
 
             </>) : null}
+            {(displaySelection === 1 && loading)? (<div className={'loading-loop-home-cont'}><RefreshIcon sx={{fontSize:'10rem'}} /></div>): null}
             {(displaySelection === 2) ? (<AddToMeal handleDone={handleUserAddedRecipesToMeal} recipes={family.favoriteRecipes}/>) : null}
             {(displaySelection === 3) ? (<EditMeal handleDone={handleUserAddedRecipesToMeal} recipes={family.favoriteRecipes}/>) : null}
-            {(displaySelection === 4) ? (<MyFamilyPage family={family}/>) : null}
+            {(displaySelection === 4) ? (<MyFamilyPage family={store.getState().family}/>) : null}
 
 
 

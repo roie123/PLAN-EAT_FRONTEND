@@ -23,32 +23,35 @@ export default function AddToMeal(props: AddRecipeToMealProps) {
      */
     const selectedMealFromHomeComponent = useSelector((state: State) => state.meal);
 
+    
+    const [userSubmited,setuserSubmited] =useState<boolean>(false); //for preventing the user to submit twice on the same page
+    
    async function sendMealToDBToBeUpdated() {
-        const recepies: Recipe[] = [...selectedRecipes, ...selectedMealFromHomeComponent.approvedRecipes];
-        selectedMealFromHomeComponent.approvedRecipes = recepies;
-        switch (store.getState().currentUser.familyRole){
-            case FamilyRole.mainUser:{
-                await updateMeal(selectedMealFromHomeComponent.id, selectedMealFromHomeComponent);
-                store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload: await getFamily()});
+       if (userSubmited===false){
+            setuserSubmited(true);
+           const recepies: Recipe[] = [...selectedRecipes, ...selectedMealFromHomeComponent.approvedRecipes];
+           selectedMealFromHomeComponent.approvedRecipes = recepies;
+           switch (store.getState().currentUser.familyRole){
+               case FamilyRole.mainUser:{
+                   await updateMeal(selectedMealFromHomeComponent.id, selectedMealFromHomeComponent);
+                   store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload: await getFamily()});
 
-                    props.handleDone();
-              await  console.log("Meal Updated thru main user");
-                return;
-                break;
-            }
-            case FamilyRole.regular:{
-                let userId :number = store.getState().currentUser.id;
-            await    console.log( await addPendingRecipes(selectedMealFromHomeComponent.id,userId,selectedRecipes));
-                store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload: await getFamily()});
-                props.handleDone();
+                   props.handleDone();
+                   return;
+                   break;
+               }
+               case FamilyRole.regular:{
+                   let userId :number = store.getState().currentUser.id;
+                   await    console.log( await addPendingRecipes(selectedMealFromHomeComponent.id,userId,selectedRecipes));
+                   store.dispatch({type:FamilyActionTypes.SET_FAMILY, payload: await getFamily()});
+                   props.handleDone();
 
-                console.log("Meal Updated thru regular user");
-                return;
-            }
+                   return;
+               }
 
-        }
+           }
+       }
 
-       window.location.replace('http://localhost:3000/')
     }
 
     /**

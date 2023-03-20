@@ -9,10 +9,12 @@ import LoopIcon from '@mui/icons-material/Loop';
 import {delay} from "@reduxjs/toolkit/dist/utils";
 import {generateCart} from "../../SERVICES/FamilyService";
 import {FamilyContext} from "../../Provider/FamilyProvider";
-import {updateCart} from "../../SERVICES/CartService";
+import {getCartByFamily, updateCart} from "../../SERVICES/CartService";
 import Dialog from '@mui/material/Dialog';
 import {Button, Typography} from "@mui/material";
 import store from "../../Redux/store";
+import {FamilyActionTypes} from "../../Redux/reducers/actionTypes/FamilyActionTypes";
+import StoreComponent from "../STORE/StoreComponent";
 
 interface CartPageProps {
     family: Family
@@ -28,9 +30,14 @@ interface ItemAndNumber {
 
 export default function CartPage(props: CartPageProps) {
 
-    let defaultCart: Cart = (props.family.cart !== null && (props.family.cart.items.length) > 0) ? props.family.cart : new Cart();
-
+    let defaultCart: Cart = (store.getState().family.cart !== null && (store.getState().family.cart.items.length) > 0) ? store.getState().family.cart : new Cart();
     const familyId:number = useContext(FamilyContext).id;
+
+    /**
+     * This state will controll the displayed component
+     */
+    const [displaySelection,setdisplaySelection] =useState<number>(0);
+    
     /**
      * This state stores the family's cart
      */
@@ -43,7 +50,6 @@ export default function CartPage(props: CartPageProps) {
      */
     const [displayedCart, setDisplayedCart] = useState<ItemAndNumber[]>([]);
 
-
     /**
      * This state is for the popUp selection
      * 0 is default for no popUp
@@ -52,7 +58,7 @@ export default function CartPage(props: CartPageProps) {
      */
     const [popUpSelection,setpopUpSelection] =useState<number>(0);
 
-    
+
 
     /**
      * This function i responsible for the displaying of the cart items, it takes the array and creates a
@@ -161,7 +167,11 @@ console.log(cart);
      */
     async  function handleGenerateCartButton(){
 
-        await setcart(await generateCart(familyId));
+        let cartFromDB:Cart= await generateCart(familyId);
+        let family:Family = {...store.getState().family};
+        family.cart=cartFromDB;
+        store.dispatch({type:FamilyActionTypes.SET_FAMILY , payload:family});
+        setcart(cartFromDB);
     }
 
 async function handleSaveCarButton(){
@@ -170,7 +180,10 @@ async function handleSaveCarButton(){
 
 }
     async function handleSaveCart(){
-        await setcart(await updateCart(cart,cart.id))
+        await setcart(await updateCart(cart,cart.id));
+        let family:Family= {...store.getState().family}
+        family.cart=cart;
+        store.dispatch({type:FamilyActionTypes.SET_FAMILY , payload:family});
         setpopUpSelection(0);
 
 
@@ -186,17 +199,23 @@ setpopUpSelection(2);
         let  cart1  = new Cart();
         cart1.id=cart.id
        // await updateCart(cart1,cart1.id);
-       await setcart(await updateCart(cart1,cart.id))
+     await updateCart(cart1,cart.id)
+       let family:Family= {...store.getState().family};
+        family.cart=cart1;
+       store.dispatch({type:FamilyActionTypes.SET_FAMILY , payload:family});
 
-       // await   setcart(cart1);
+
+       await   setcart(cart1);
 
        setpopUpSelection(0);
 
     }
 
     return (
+    <>
+        {(displaySelection === 1) ? (<StoreComponent/>) : null}
 
-        <>
+        {(displaySelection === 0) ? (<>
             <div className="cart-cont">
                 <div className="title-cont">
                     <h4>Hi ! </h4>
@@ -209,16 +228,17 @@ setpopUpSelection(2);
                     {displayedCart.length === 0 ? (
                         //This will be displayed When there are no Items / The list is empty
                         noCouponsFound ? (
-                            <div className={"no-items-cont"}>
+                                <div className={"no-items-cont"}>
 
                                     <p>Sorry , we haven't been able to find any Item in your Cart </p>
-                                <div className={"no-items-lower"}>
-                                    <button onClick={()=> handleGenerateCartButton()} >Generate My Cart</button>
-                                    <p id={"desc-line"}>*Generating your cart will calculate all the ingredients you will need in this week</p>
+                                    <div className={"no-items-lower"}>
+                                        <button onClick={() => handleGenerateCartButton()}>Generate My Cart</button>
+                                        <p id={"desc-line"}>*Generating your cart will calculate all the ingredients you
+                                            will need in this week</p>
 
 
+                                    </div>
                                 </div>
-                            </div>
 
                             )
                             :
@@ -236,7 +256,7 @@ setpopUpSelection(2);
                     ) : (
 
                         displayedCart.map((item) => (
-                            <div key={item.ingredient.id!*Math.random()} className="item-card">
+                            <div key={item.ingredient.id! * Math.random()} className="item-card">
                                 <div className="upper-cont">
                                     <div className="item-img-cont">
                                         <img src={item.ingredient.imgUrl} alt="shows a pic of an item"/>
@@ -246,7 +266,9 @@ setpopUpSelection(2);
                                         <div className="item-buttons">
                                             <AddIcon onClick={() => handleClickOnAddButton(item.ingredient)}
                                                      sx={{fontSize: '2rem'}}/>
-                                            <RemoveCircleOutlineIcon onClick={()=>handleClickOnMinusButton(item.ingredient)} sx={{fontSize: '2rem'}}/>
+                                            <RemoveCircleOutlineIcon
+                                                onClick={() => handleClickOnMinusButton(item.ingredient)}
+                                                sx={{fontSize: '2rem'}}/>
                                         </div>
                                     </div>
 
@@ -261,14 +283,15 @@ setpopUpSelection(2);
                         ))
 
 
-
                     )}
 
                 </div>
                 <div className={"cart-action-cont"}>
-                    <button className={"restock-button"} onClick={()=> handleSaveCarButton()} >Save</button>
-                    <button className={"restock-button"} onClick={()=>handleClearCartButton()}>Clear</button>
+                    <button className={"restock-button"} onClick={() => handleSaveCarButton()}>Save</button>
+                    <button className={"restock-button"} onClick={() => handleClearCartButton()}>Clear</button>
                 </div>
+                <button className={"restock-button"} onClick={() => setdisplaySelection(1)}>Add From Store</button>
+
                 <div className="restock-cont">
                     <div className="week-number">
                         <p>Restock For <span>{numberOfWeeks}</span> Weeks</p>
@@ -279,47 +302,49 @@ setpopUpSelection(2);
                         </div>
 
                     </div>
-                        <button className='restock-button'>RESTOCK</button>
+                    <button className='restock-button'>RESTOCK</button>
 
                 </div>
                 <p className={'restock-error'}>{restockErrorMessage}</p>
 
             </div>
-            <Dialog open={popUpSelection===2} sx={{padding:"1rem"}}>
-              <Typography sx={
-                  {
-                     textAlign:"center",
-                      padding:"1rem"
-                  }
-              }  component="div">
-                Are You Sure You Want To Clear Your Cart ?
-            </Typography>
-                <br />
-                <Button onClick={()=> handleClearCart()} variant="outlined" >
+            <Dialog open={popUpSelection === 2} sx={{padding: "1rem"}}>
+                <Typography sx={
+                    {
+                        textAlign: "center",
+                        padding: "1rem"
+                    }
+                } component="div">
+                    Are You Sure You Want To Clear Your Cart ?
+                </Typography>
+                <br/>
+                <Button onClick={() => handleClearCart()} variant="outlined">
                     Yes
                 </Button>
-                <Button onClick={()=> setpopUpSelection(0)} variant="outlined" >
+                <Button onClick={() => setpopUpSelection(0)} variant="outlined">
                     No
                 </Button>
             </Dialog>
 
-            <Dialog open={popUpSelection===1} sx={{padding:"1rem"}}>
+            <Dialog open={popUpSelection === 1} sx={{padding: "1rem"}}>
                 <Typography sx={
                     {
-                        textAlign:"center",
-                        padding:"1rem"
+                        textAlign: "center",
+                        padding: "1rem"
                     }
-                }  component="div">
+                } component="div">
                     Are You Sure You Want To Save Your Cart ?
                 </Typography>
-                <br />
-                <Button onClick={()=>handleSaveCart()} variant="outlined" >
+                <br/>
+                <Button onClick={() => handleSaveCart()} variant="outlined">
                     Yes
                 </Button>
-                <Button onClick={()=> setpopUpSelection(0)} variant="outlined" >
+                <Button onClick={() => setpopUpSelection(0)} variant="outlined">
                     No
                 </Button>
             </Dialog>
-        </>
+        </>) : null}
+    </>
+
     )
 }

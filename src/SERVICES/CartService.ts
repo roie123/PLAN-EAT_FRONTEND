@@ -13,7 +13,16 @@ export const updateCart =  async  (cart:Cart, cartId:number):Promise<Cart> => {
             throw error;
         }
     };
+export const getCartByFamily =  async  (familyId:number):Promise<Cart> => {
 
+    try {
+        const response = await axios.get(`${baseURL}/byFamily/${familyId}`);
+
+        return response.data as  Cart;
+    } catch (error) {
+        throw error;
+    }
+};
 
 
 

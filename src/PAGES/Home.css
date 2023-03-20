@@ -29,17 +29,15 @@
     width: 100%;
     height: 70vh;
     padding: 4vh;
-    opacity: 0;
-    animation-name: meals;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
+
+    flex-direction: column ;
 
 }
 @keyframes meals {
-    0%{opacity: 0; transform: translateX(-505px);}
+    0%{opacity: 0; transform: translateX(-100px)}
     /* 50%{opacity: 0.5; transform: translateX(-40px);}
    75%{opacity: 0.75; transform: translateX(0);} */
-    100%{opacity: 1;}
+    100%{opacity: 1}
 }
 .nice-points-cont{
 display: flex;
@@ -70,10 +68,7 @@ align-items: center;
     0%{opacity: 0; transform: translateX(-300px);}
     100%{opacity:1; transform: translateX(0);}
 }
-.next-meals-cont{
-display: flex;
-flex-direction: column ;
-}
+
 .day-cont{
 
 }
@@ -199,4 +194,21 @@ display: flex;
 .ing-circle .img-cont{
     width: 6vh;
     height: 6vh;
+}
+.loading-loop-home-cont{
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-name: loop-home;
+    animation-duration: 1s;
+    animation-fill-mode: backwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-delay: -1s;
+}
+@keyframes loop-home {
+    0%{transform: rotate(-359deg)}
+    100%{transform: rotate(359deg)}
 }

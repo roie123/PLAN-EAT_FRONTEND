@@ -23,19 +23,14 @@ switch ( action.type){
 
     case CurrentUserActionType.GET:{
         return newCurrentUserState;
-        console.log("GETTING USER");
         break;
     }
     case CurrentUserActionType.SET:{
-        console.log("CURRENT USER CHANGING");
         newCurrentUserState=action.payload;
-        console.log("USER CHANGED");
          break;
     }
     case CurrentUserActionType.CLEAR:{
-        console.log("CURRENT USER CLEARING");
         newCurrentUserState=defaultUser;
-        console.log("USER CLEARED");
         break;
     }
 
